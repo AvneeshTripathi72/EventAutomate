@@ -13,12 +13,12 @@ const About = React.lazy(() => import("@/pages/About"));
 const Contact = React.lazy(() => import("@/pages/Contact"));
 const Industries = React.lazy(() => import("@/pages/Industries"));
 const Services = React.lazy(() => import("@/pages/Services"));
-const Admin = React.lazy(() => import("@admin/pages/Admin"));
+const Admin = React.lazy(() => import("../../admin/src/pages/Admin"));
 const SubmitResume = React.lazy(() => import("./pages/SubmitResume"));
 const CareerAdvice = React.lazy(() => import("@/pages/CareerAdvice"));
 const CRM = React.lazy(() => import("@/pages/CRM"));
 const ATS = React.lazy(() => import("@/pages/ATS"));
-const SignIn = React.lazy(() => import("@admin/pages/SignIn"));
+const SignIn = React.lazy(() => import("../../admin/src/pages/SignIn"));
 const Roadmap = React.lazy(() => import("@/pages/Roadmap"));
 const VendorRegistration = React.lazy(() => import("@/pages/VendorRegistration"));
 const JobSeekerAuth = React.lazy(() => import("./pages/JobSeekerAuth"));
@@ -33,7 +33,7 @@ const AIRecruiter = React.lazy(() => import("@/pages/AIRecruiter"));
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/lib/protected-route";
 import AgastyaChat from "@/components/AgastyaChat";
-const SuperAdmin = React.lazy(() => import("@admin/pages/SuperAdmin"));
+const SuperAdmin = React.lazy(() => import("../../admin/src/pages/SuperAdmin"));
 
 const VerifyEmail = React.lazy(() => import("@/pages/VerifyEmail"));
 

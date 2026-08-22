@@ -1,142 +1,153 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, integer, serial, boolean, jsonb } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // ─── Multi-tenant: Companies (one row per onboarded staffing agency) ─────────
-export const companies = pgTable("companies", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull(),
-  domain: text("domain"),
-  plan: text("plan").notNull().default("starter"),   // starter | pro | enterprise
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const companiesSchema = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  domain: z.string().optional(),
+  plan: z.string().optional(),
+  isActive: z.boolean().optional(),
+  createdAt: z.date().optional(),
 });
+export type Companie = z.infer<typeof companiesSchema>;
 
-export const jobs = pgTable("jobs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  title: text("title").notNull(),
-  company: text("company").notNull(),
-  location: text("location").notNull(),
-  jobType: text("job_type").notNull(),
-  industry: text("industry").notNull(),
-  description: text("description").notNull(),
-  salary: text("salary"),
-  postedDate: timestamp("posted_date").notNull().default(sql`now()`),
+export const jobsSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  title: z.string(),
+  company: z.string(),
+  location: z.string(),
+  jobType: z.string(),
+  industry: z.string(),
+  description: z.string(),
+  salary: z.string().optional(),
+  postedDate: z.date().optional(),
 });
+export type Job = z.infer<typeof jobsSchema>;
 
-export const applications = pgTable("applications", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  jobId: varchar("job_id").notNull(),
-  jobTitle: text("job_title").notNull(),
-  applicantName: text("applicant_name").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone"),
-  resumeUrl: text("resume_url"),
-  coverLetter: text("cover_letter"),
-  status: text("status").notNull().default("new"),
-  notes: text("notes"),
-  jobSeekerId: integer("job_seeker_id"),
-  source: text("source"),   
-  appliedDate: timestamp("applied_date").notNull().default(sql`now()`),
+export const applicationsSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  jobId: z.string(),
+  jobTitle: z.string(),
+  applicantName: z.string(),
+  email: z.string(),
+  phone: z.string().optional(),
+  resumeUrl: z.string().optional(),
+  coverLetter: z.string().optional(),
+  status: z.string().optional(),
+  notes: z.string().optional(),
+  jobSeekerId: z.number().optional(),
+  source: z.string().optional(),
+  appliedDate: z.date().optional(),
 });
+export type Application = z.infer<typeof applicationsSchema>;
 
-export const contacts = pgTable("contacts", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone"),
-  inquiryType: text("inquiry_type").notNull(),
-  message: text("message").notNull(),
-  submittedDate: timestamp("submitted_date").notNull().default(sql`now()`),
+export const contactsSchema = z.object({
+  id: z.string().optional(),
+  name: z.string(),
+  email: z.string(),
+  phone: z.string().optional(),
+  inquiryType: z.string(),
+  message: z.string(),
+  submittedDate: z.date().optional(),
 });
+export type Contact = z.infer<typeof contactsSchema>;
 
-export const resumes = pgTable("resumes", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  fullName: text("full_name").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone").notNull(),
-  desiredPosition: text("desired_position").notNull(),
-  yearsExperience: integer("years_experience").notNull(),
-  skills: text("skills").notNull(),
-  linkedIn: text("linkedin"),
-  additionalInfo: text("additional_info"),
-  resumeUrl: text("resume_url"),
-  // Same verified-ownership link as applications.jobSeekerId. Server-only.
-  jobSeekerId: integer("job_seeker_id"),
-  submittedDate: timestamp("submitted_date").notNull().default(sql`now()`),
+export const resumesSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  fullName: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  desiredPosition: z.string(),
+  yearsExperience: z.number(),
+  skills: z.string(),
+  linkedIn: z.string().optional(),
+  additionalInfo: z.string().optional(),
+  resumeUrl: z.string().optional(),
+  jobSeekerId: z.number().optional(),
+  submittedDate: z.date().optional(),
 });
+export type Resume = z.infer<typeof resumesSchema>;
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").unique().notNull(),
-  password: text("password").notNull(),
-  // Multi-tenant fields
-  role: text("role").notNull().default("recruiter"),   // super_admin | company_admin | recruiter
-  companyId: varchar("company_id"),                    // null for super_admin
-  email: text("email"),
-  fullName: text("full_name"),
-  isActive: boolean("is_active").notNull().default(true),
-  isVerified: boolean("is_verified").notNull().default(false),
-  verificationToken: text("verification_token"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const usersSchema = z.object({
+  id: z.number().optional(),
+  username: z.string(),
+  password: z.string(),
+  role: z.string().optional(),
+  companyId: z.string().optional(),
+  email: z.string().optional(),
+  fullName: z.string().optional(),
+  isActive: z.boolean().optional(),
+  isVerified: z.boolean().optional(),
+  verificationToken: z.string().optional(),
+  createdAt: z.date().optional(),
 });
+export type User = z.infer<typeof usersSchema>;
 
 export type UserRole = "super_admin" | "company_admin" | "recruiter";
 export const USER_ROLES: UserRole[] = ["super_admin", "company_admin", "recruiter"];
 
-export const jobSeekers = pgTable("job_seekers", {
-  id: serial("id").primaryKey(),
-  fullName: text("full_name").notNull(),
-  email: text("email").unique().notNull(),
-  password: text("password").notNull(),
-  phone: text("phone"),
-  currentPosition: text("current_position"),
-  experienceLevel: text("experience_level"),
-  currentSalary: text("current_salary"),
-  expectedSalary: text("expected_salary"),
-  noticePeriod: text("notice_period"),
-  skills: text("skills"),
-  education: text("education"),
-  portfolioLinks: jsonb("portfolio_links"),
-  resetToken: text("reset_token"),
-  resetTokenExpires: timestamp("reset_token_expires"),
-  isHotlisted: boolean("is_hotlisted").notNull().default(false),
-  hotlistNotes: text("hotlist_notes"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const jobSeekersSchema = z.object({
+  id: z.number().optional(),
+  fullName: z.string(),
+  email: z.string(),
+  password: z.string(),
+  phone: z.string().optional(),
+  currentPosition: z.string().optional(),
+  experienceLevel: z.string().optional(),
+  currentSalary: z.string().optional(),
+  expectedSalary: z.string().optional(),
+  noticePeriod: z.string().optional(),
+  skills: z.string().optional(),
+  education: z.string().optional(),
+  portfolioLinks: z.any().optional(),
+  resetToken: z.string().optional(),
+  resetTokenExpires: z.date().optional(),
+  isHotlisted: z.boolean().optional(),
+  hotlistNotes: z.string().optional(),
+  createdAt: z.date().optional(),
 });
+export type JobSeeker = z.infer<typeof jobSeekersSchema>;
 
-export const interviews = pgTable("interviews", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  applicationId: varchar("application_id").notNull(),
-  scheduledAt: timestamp("scheduled_at").notNull(),
-  mode: text("mode").notNull().default("video"),
-  interviewerName: text("interviewer_name").notNull(),
-  interviewerEmail: text("interviewer_email"),
-  status: text("status").notNull().default("scheduled"),
-  feedback: text("feedback"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const interviewsSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  applicationId: z.string(),
+  scheduledAt: z.date(),
+  mode: z.string().optional(),
+  interviewerName: z.string(),
+  interviewerEmail: z.string().optional(),
+  status: z.string().optional(),
+  feedback: z.string().optional(),
+  createdAt: z.date().optional(),
 });
+export type Interview = z.infer<typeof interviewsSchema>;
 
-export const submissions = pgTable("submissions", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  applicationId: varchar("application_id").notNull(),
-  clientId: varchar("client_id").notNull(),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  submittedAt: timestamp("submitted_at").notNull().default(sql`now()`),
-  status: text("status").notNull().default("submitted"),
-  rateOfferedInr: integer("rate_offered_inr"),
-  notes: text("notes"),
+export const submissionsSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  applicationId: z.string(),
+  clientId: z.string(),
+  ownerUserId: z.string(),
+  submittedAt: z.date().optional(),
+  status: z.string().optional(),
+  rateOfferedInr: z.number().optional(),
+  notes: z.string().optional(),
 });
+export type Submission = z.infer<typeof submissionsSchema>;
 
-export const activities = pgTable("activities", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  applicationId: varchar("application_id").notNull(),
-  type: text("type").notNull(),
-  description: text("description").notNull(),
-  createdByUserId: varchar("created_by_user_id"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const activitiesSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  applicationId: z.string(),
+  type: z.string(),
+  description: z.string(),
+  createdByUserId: z.string().optional(),
+  createdAt: z.date().optional(),
 });
+export type Activity = z.infer<typeof activitiesSchema>;
 
 export const APPLICATION_STATUSES = [
   "new", "reviewing", "shortlisted", "submitted",
@@ -144,10 +155,7 @@ export const APPLICATION_STATUSES = [
 ] as const;
 export type ApplicationStatus = typeof APPLICATION_STATUSES[number];
 
-export const insertInterviewSchema = createInsertSchema(interviews).omit({
-  id: true,
-  createdAt: true,
-}).extend({
+export const insertInterviewSchema = interviewsSchema.omit({ "id": true, "createdAt": true }).extend({
   applicationId: z.string().uuid("Valid application required"),
   scheduledAt: z.coerce.date(),
   mode: z.enum(["phone", "video", "onsite"]).default("video"),
@@ -157,13 +165,9 @@ export const insertInterviewSchema = createInsertSchema(interviews).omit({
   feedback: z.string().trim().max(4000).optional().nullable(),
 });
 export type InsertInterview = z.infer<typeof insertInterviewSchema>;
-export type Interview = typeof interviews.$inferSelect;
 
-export const insertSubmissionSchema = createInsertSchema(submissions).omit({
-  id: true,
-  submittedAt: true,
-  ownerUserId: true,
-}).extend({
+
+export const insertSubmissionSchema = submissionsSchema.omit({ "id": true, "submittedAt": true, "ownerUserId": true }).extend({
   applicationId: z.string().uuid("Valid application required"),
   clientId: z.string().uuid("Valid client required"),
   status: z.enum(["submitted", "client_review", "interview", "rejected", "selected"]).default("submitted"),
@@ -171,19 +175,15 @@ export const insertSubmissionSchema = createInsertSchema(submissions).omit({
   notes: z.string().trim().max(2000).optional().nullable(),
 });
 export type InsertSubmission = z.infer<typeof insertSubmissionSchema>;
-export type Submission = typeof submissions.$inferSelect;
 
-export const insertActivitySchema = createInsertSchema(activities).omit({
-  id: true,
-  createdAt: true,
-  createdByUserId: true,
-}).extend({
+
+export const insertActivitySchema = activitiesSchema.omit({ "id": true, "createdAt": true, "createdByUserId": true }).extend({
   applicationId: z.string().uuid("Valid application required"),
   type: z.enum(["note", "status_change", "interview", "submission", "hotlist"]),
   description: z.string().trim().min(1).max(2000),
 });
 export type InsertActivity = z.infer<typeof insertActivitySchema>;
-export type Activity = typeof activities.$inferSelect;
+
 
 export const hotlistToggleSchema = z.object({
   isHotlisted: z.boolean(),
@@ -203,57 +203,56 @@ export const resetPasswordSchema = z.object({
 export type ForgotPasswordRequest = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordRequest = z.infer<typeof resetPasswordSchema>;
 
-export const vendors = pgTable("vendors", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  companyName: text("company_name").notNull(),
-  contactPerson: text("contact_person").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone").notNull(),
-  website: text("website"),
-  servicesOffered: text("services_offered").notNull(),
-  industriesExpertise: text("industries_expertise").notNull(),
-  geographicCoverage: text("geographic_coverage").notNull(),
-  yearsInBusiness: integer("years_in_business").notNull(),
-  companyDescription: text("company_description").notNull(),
-  partnershipReason: text("partnership_reason").notNull(),
-  submittedDate: timestamp("submitted_date").notNull().default(sql`now()`),
+export const vendorsSchema = z.object({
+  id: z.string().optional(),
+  companyName: z.string(),
+  contactPerson: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  website: z.string().optional(),
+  servicesOffered: z.string(),
+  industriesExpertise: z.string(),
+  geographicCoverage: z.string(),
+  yearsInBusiness: z.number(),
+  companyDescription: z.string(),
+  partnershipReason: z.string(),
+  submittedDate: z.date().optional(),
 });
+export type Vendor = z.infer<typeof vendorsSchema>;
 
-export const clients = pgTable("clients", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  companyName: text("company_name").notNull(),
-  industry: text("industry").notNull(),
-  city: text("city").notNull(),
-  primaryContactName: text("primary_contact_name").notNull(),
-  primaryContactEmail: text("primary_contact_email").notNull(),
-  primaryContactPhone: text("primary_contact_phone"),
-  status: text("status").notNull().default("active"),
-  accountOwner: text("account_owner").notNull().default("Unassigned"),
-  arrInr: integer("arr_inr").notNull().default(0),
-  notes: text("notes"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const clientsSchema = z.object({
+  id: z.string().optional(),
+  ownerUserId: z.string(),
+  companyName: z.string(),
+  industry: z.string(),
+  city: z.string(),
+  primaryContactName: z.string(),
+  primaryContactEmail: z.string(),
+  primaryContactPhone: z.string().optional(),
+  status: z.string().optional(),
+  accountOwner: z.string().optional(),
+  arrInr: z.number().optional(),
+  notes: z.string().optional(),
+  createdAt: z.date().optional(),
 });
+export type Client = z.infer<typeof clientsSchema>;
 
-export const deals = pgTable("deals", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  clientId: varchar("client_id").notNull(),
-  title: text("title").notNull(),
-  stage: text("stage").notNull().default("qualified"),
-  valueInr: integer("value_inr").notNull().default(0),
-  positions: integer("positions").notNull().default(1),
-  expectedCloseDate: timestamp("expected_close_date"),
-  owner: text("owner").notNull().default("Unassigned"),
-  notes: text("notes"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const dealsSchema = z.object({
+  id: z.string().optional(),
+  ownerUserId: z.string(),
+  clientId: z.string(),
+  title: z.string(),
+  stage: z.string().optional(),
+  valueInr: z.number().optional(),
+  positions: z.number().optional(),
+  expectedCloseDate: z.date().optional(),
+  owner: z.string().optional(),
+  notes: z.string().optional(),
+  createdAt: z.date().optional(),
 });
+export type Deal = z.infer<typeof dealsSchema>;
 
-export const insertClientSchema = createInsertSchema(clients).omit({
-  id: true,
-  createdAt: true,
-  ownerUserId: true,
-}).extend({
+export const insertClientSchema = clientsSchema.omit({ "id": true, "createdAt": true, "ownerUserId": true }).extend({
   companyName: z.string().trim().min(1, "Company name is required").max(200),
   industry: z.string().trim().min(1).max(100),
   city: z.string().trim().min(1).max(100),
@@ -266,13 +265,9 @@ export const insertClientSchema = createInsertSchema(clients).omit({
   notes: z.string().trim().max(2000).optional().nullable(),
 });
 export type InsertClient = z.infer<typeof insertClientSchema>;
-export type Client = typeof clients.$inferSelect;
 
-export const insertDealSchema = createInsertSchema(deals).omit({
-  id: true,
-  createdAt: true,
-  ownerUserId: true,
-}).extend({
+
+export const insertDealSchema = dealsSchema.omit({ "id": true, "createdAt": true, "ownerUserId": true }).extend({
   clientId: z.string().uuid("Valid client required"),
   title: z.string().trim().min(1, "Deal title is required").max(200),
   stage: z.enum(["qualified", "discovery", "proposal", "negotiation", "won", "lost"]).default("qualified"),
@@ -283,176 +278,161 @@ export const insertDealSchema = createInsertSchema(deals).omit({
   expectedCloseDate: z.coerce.date().optional().nullable(),
 });
 export type InsertDeal = z.infer<typeof insertDealSchema>;
-export type Deal = typeof deals.$inferSelect;
+
 
 // ─── Onboarding ──────────────────────────────────────────────────────────────
-export const onboardings = pgTable("onboardings", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  applicationId: varchar("application_id"),
-  candidateName: text("candidate_name").notNull(),
-  jobTitle: text("job_title").notNull(),
-  company: text("company").notNull(),
-  status: text("status").notNull().default("Background Check"),
-  progress: integer("progress").notNull().default(0),
-  etaDays: integer("eta_days").notNull().default(7),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const onboardingsSchema = z.object({
+  id: z.string().optional(),
+  applicationId: z.string().optional(),
+  candidateName: z.string(),
+  jobTitle: z.string(),
+  company: z.string(),
+  status: z.string().optional(),
+  progress: z.number().optional(),
+  etaDays: z.number().optional(),
+  ownerUserId: z.string(),
+  createdAt: z.date().optional(),
 });
+export type Onboarding = z.infer<typeof onboardingsSchema>;
 
-export const insertOnboardingSchema = createInsertSchema(onboardings).omit({
-  id: true,
-  createdAt: true,
-  ownerUserId: true,
-}).extend({
+export const insertOnboardingSchema = onboardingsSchema.omit({ "id": true, "createdAt": true, "ownerUserId": true }).extend({
   progress: z.number().int().min(0).max(100).default(0),
 });
 export type InsertOnboarding = z.infer<typeof insertOnboardingSchema>;
-export type Onboarding = typeof onboardings.$inferSelect;
+
 
 // ─── Financials ───────────────────────────────────────────────────────────────
-export const invoices = pgTable("invoices", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  invoiceNumber: text("invoice_number").notNull(),
-  clientId: varchar("client_id"),
-  clientName: text("client_name").notNull(),
-  amountInr: integer("amount_inr").notNull(),
-  status: text("status").notNull().default("Sent"),
-  dueDate: timestamp("due_date").notNull(),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const invoicesSchema = z.object({
+  id: z.string().optional(),
+  invoiceNumber: z.string(),
+  clientId: z.string().optional(),
+  clientName: z.string(),
+  amountInr: z.number(),
+  status: z.string().optional(),
+  dueDate: z.date(),
+  ownerUserId: z.string(),
+  createdAt: z.date().optional(),
 });
+export type Invoice = z.infer<typeof invoicesSchema>;
 
-export const insertInvoiceSchema = createInsertSchema(invoices).omit({
-  id: true,
-  createdAt: true,
-  ownerUserId: true,
-}).extend({
+export const insertInvoiceSchema = invoicesSchema.omit({ "id": true, "createdAt": true, "ownerUserId": true }).extend({
   dueDate: z.coerce.date(),
   amountInr: z.number().int().min(0),
 });
 export type InsertInvoice = z.infer<typeof insertInvoiceSchema>;
-export type Invoice = typeof invoices.$inferSelect;
+
 
 // ─── E-Signatures ─────────────────────────────────────────────────────────────
-export const esignatures = pgTable("esignatures", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  title: text("title").notNull(),
-  recipient: text("recipient").notNull(),
-  status: text("status").notNull().default("Sent"),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const esignaturesSchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  recipient: z.string(),
+  status: z.string().optional(),
+  ownerUserId: z.string(),
+  createdAt: z.date().optional(),
 });
+export type ESignature = z.infer<typeof esignaturesSchema>;
 
-export const insertESignatureSchema = createInsertSchema(esignatures).omit({
-  id: true,
+export const insertESignatureSchema = esignaturesSchema.omit({ id: true,
   createdAt: true,
   ownerUserId: true,
-});
+ });
 export type InsertESignature = z.infer<typeof insertESignatureSchema>;
-export type ESignature = typeof esignatures.$inferSelect;
+
 
 // ─── Background Checks ────────────────────────────────────────────────────────
-export const backgroundChecks = pgTable("background_checks", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  candidateName: text("candidate_name").notNull(),
-  provider: text("provider").notNull(),
-  status: text("status").notNull().default("Pending"),
-  etaDays: integer("eta_days"),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const backgroundChecksSchema = z.object({
+  id: z.string().optional(),
+  candidateName: z.string(),
+  provider: z.string(),
+  status: z.string().optional(),
+  etaDays: z.number().optional(),
+  ownerUserId: z.string(),
+  createdAt: z.date().optional(),
 });
+export type BackgroundCheck = z.infer<typeof backgroundChecksSchema>;
 
-export const insertBackgroundCheckSchema = createInsertSchema(backgroundChecks).omit({
-  id: true,
+export const insertBackgroundCheckSchema = backgroundChecksSchema.omit({ id: true,
   createdAt: true,
   ownerUserId: true,
-});
+ });
 export type InsertBackgroundCheck = z.infer<typeof insertBackgroundCheckSchema>;
-export type BackgroundCheck = typeof backgroundChecks.$inferSelect;
+
 
 // ─── Emails & Meetings (Inbox & Calendar) ─────────────────────────────────────
-export const emails = pgTable("emails", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  sender: text("sender").notNull(),
-  subject: text("subject").notNull(),
-  body: text("body"),
-  unread: boolean("unread").notNull().default(true),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const emailsSchema = z.object({
+  id: z.string().optional(),
+  sender: z.string(),
+  subject: z.string(),
+  body: z.string().optional(),
+  unread: z.boolean().optional(),
+  ownerUserId: z.string(),
+  createdAt: z.date().optional(),
 });
+export type Email = z.infer<typeof emailsSchema>;
 
-export const insertEmailSchema = createInsertSchema(emails).omit({
-  id: true,
+export const insertEmailSchema = emailsSchema.omit({ id: true,
   createdAt: true,
   ownerUserId: true,
-});
+ });
 export type InsertEmail = z.infer<typeof insertEmailSchema>;
-export type EmailMessage = typeof emails.$inferSelect;
 
-export const meetings = pgTable("meetings", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  title: text("title").notNull(),
-  durationMinutes: integer("duration_minutes").notNull().default(30),
-  startTime: timestamp("start_time").notNull(),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
-});
 
-export const insertMeetingSchema = createInsertSchema(meetings).omit({
-  id: true,
-  createdAt: true,
-  ownerUserId: true,
+export const meetingsSchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  durationMinutes: z.number().optional(),
+  startTime: z.date(),
+  ownerUserId: z.string(),
+  createdAt: z.date().optional(),
 });
+export type Meeting = z.infer<typeof meetingsSchema>;
+export const insertMeetingSchema = meetingsSchema.omit({ id: true, createdAt: true, ownerUserId: true });
 export type InsertMeeting = z.infer<typeof insertMeetingSchema>;
-export type Meeting = typeof meetings.$inferSelect;
 
-
-// ─── AI Recruiter ────────────────────────────────────────────────────────
-export const aiEvaluations = pgTable("ai_evaluations", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  candidateName: text("candidate_name").notNull(),
-  jobTitle: text("job_title").notNull(),
-  jdText: text("jd_text").notNull(),
-  resumeText: text("resume_text").notNull(),
-  overallScore: integer("overall_score").notNull(),
-  skillsScore: integer("skills_score").notNull(),
-  experienceScore: integer("experience_score").notNull(),
-  cultureScore: integer("culture_score").notNull(),
-  integrityScore: integer("integrity_score").notNull(),
-  verdict: text("verdict").notNull(),
-  summary: text("summary").notNull(),
-  strengths: text("strengths").array().notNull().default(sql`'{}'::text[]`),
-  redFlags: text("red_flags").array().notNull().default(sql`'{}'::text[]`),
-  matchedSkills: text("matched_skills").array().notNull().default(sql`'{}'::text[]`),
-  missingSkills: text("missing_skills").array().notNull().default(sql`'{}'::text[]`),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const aiEvaluationsSchema = z.object({
+  id: z.string().optional(),
+  ownerUserId: z.string(),
+  candidateName: z.string(),
+  jobTitle: z.string(),
+  jdText: z.string(),
+  resumeText: z.string(),
+  overallScore: z.number(),
+  skillsScore: z.number(),
+  experienceScore: z.number(),
+  cultureScore: z.number(),
+  integrityScore: z.number(),
+  verdict: z.string(),
+  summary: z.string(),
+  strengths: z.array(z.string()).optional().nullable(),
+  redFlags: z.array(z.string()).optional().nullable(),
+  matchedSkills: z.array(z.string()).optional().nullable(),
+  missingSkills: z.array(z.string()).optional().nullable(),
+  createdAt: z.date().optional(),
 });
+export type AiEvaluation = z.infer<typeof aiEvaluationsSchema>;
 
-export const aiAssessments = pgTable("ai_assessments", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  ownerUserId: varchar("owner_user_id").notNull(),
-  title: text("title").notNull(),
-  jobTitle: text("job_title").notNull(),
-  jdText: text("jd_text").notNull(),
-  seniority: text("seniority").notNull().default("mid"),
-  durationMinutes: integer("duration_minutes").notNull().default(30),
-  questions: jsonb("questions").notNull().default(sql`'[]'::jsonb`),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const aiAssessmentsSchema = z.object({
+  id: z.string().optional(),
+  ownerUserId: z.string(),
+  title: z.string(),
+  jobTitle: z.string(),
+  jdText: z.string(),
+  seniority: z.string().optional(),
+  durationMinutes: z.number().optional(),
+  questions: z.any().optional(),
+  createdAt: z.date().optional(),
 });
+export type AiAssessment = z.infer<typeof aiAssessmentsSchema>;
 
-export const insertAiEvaluationSchema = createInsertSchema(aiEvaluations).omit({
-  id: true,
-  createdAt: true,
-  ownerUserId: true,
-}).extend({
+export const insertAiEvaluationSchema = aiEvaluationsSchema.omit({ "id": true, "createdAt": true, "ownerUserId": true }).extend({
   candidateName: z.string().trim().min(1).max(200),
   jobTitle: z.string().trim().min(1).max(200),
   jdText: z.string().trim().min(20).max(20000),
   resumeText: z.string().trim().min(20).max(40000),
 });
 export type InsertAiEvaluation = z.infer<typeof insertAiEvaluationSchema>;
-export type AiEvaluation = typeof aiEvaluations.$inferSelect;
+
 
 export const aiAssessmentQuestionSchema = z.object({
   q: z.string(),
@@ -480,58 +460,45 @@ export const scoreCandidateInputSchema = z.object({
 });
 export type ScoreCandidateInput = z.infer<typeof scoreCandidateInputSchema>;
 
-export type AiAssessment = typeof aiAssessments.$inferSelect;
 
-export const articles = pgTable("articles", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  title: text("title").notNull(),
-  category: text("category").notNull(),
-  excerpt: text("excerpt").notNull(),
-  content: text("content").notNull(),
-  author: text("author").notNull().default("Tilcons Team"),
-  readTime: text("read_time").notNull().default("3 min read"),
-  published: boolean("published").notNull().default(true),
-  publishedDate: timestamp("published_date").notNull().default(sql`now()`),
+
+export const articlesSchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  category: z.string(),
+  excerpt: z.string(),
+  content: z.string(),
+  author: z.string().optional(),
+  readTime: z.string().optional(),
+  published: z.boolean().optional(),
+  publishedDate: z.date().optional(),
 });
+export type Article = z.infer<typeof articlesSchema>;
 
-export const insertArticleSchema = createInsertSchema(articles).omit({
-  id: true,
+export const insertArticleSchema = articlesSchema.omit({ id: true,
   publishedDate: true,
-});
+ });
 
 export type InsertArticle = z.infer<typeof insertArticleSchema>;
-export type Article = typeof articles.$inferSelect;
 
-export const insertJobSchema = createInsertSchema(jobs).omit({
-  id: true,
-  postedDate: true,
-});
+export const insertJobSchema = jobsSchema.omit({ id: true, postedDate: true });
 
-export const insertApplicationSchema = createInsertSchema(applications).omit({
-  id: true,
-  appliedDate: true,
-  // jobSeekerId is set server-side from the session, never trusted from client.
-  jobSeekerId: true,
-}).extend({
+export const insertApplicationSchema = applicationsSchema.omit({ id: true, appliedDate: true, jobSeekerId: true }).extend({
   source: z.enum(["LinkedIn", "Naukri", "Indeed", "Monster", "Referral", "Direct", "Walk-in", "Other"]).optional().nullable(),
 });
 
-export const insertContactSchema = createInsertSchema(contacts).omit({
-  id: true,
-  submittedDate: true,
-});
+export const insertContactSchema = contactsSchema.omit({ id: true, submittedDate: true });
 
-export const insertResumeSchema = createInsertSchema(resumes).omit({
-  id: true,
+
+export const insertResumeSchema = resumesSchema.omit({ id: true,
   submittedDate: true,
   // jobSeekerId is set server-side from the session, never trusted from client.
   jobSeekerId: true,
-});
+ });
 
-export const insertUserSchema = createInsertSchema(users).omit({
-  id: true,
+export const insertUserSchema = usersSchema.omit({ id: true,
   createdAt: true,
-});
+ });
 
 export const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -539,16 +506,13 @@ export const loginSchema = z.object({
 });
 
 // Company schemas
-export const insertCompanySchema = createInsertSchema(companies).omit({
-  id: true,
-  createdAt: true,
-}).extend({
+export const insertCompanySchema = companiesSchema.omit({ "id": true, "createdAt": true }).extend({
   name: z.string().trim().min(1, "Company name is required").max(200),
   domain: z.string().trim().max(200).optional().nullable(),
   plan: z.enum(["starter", "pro", "enterprise"]).default("starter"),
 });
 export type InsertCompany = z.infer<typeof insertCompanySchema>;
-export type Company = typeof companies.$inferSelect;
+
 
 // Schema for onboarding a new company (creates company + company admin user in one step)
 export const onboardCompanySchema = z.object({
@@ -572,15 +536,11 @@ export const createCompanyUserSchema = z.object({
 });
 export type CreateCompanyUserInput = z.infer<typeof createCompanyUserSchema>;
 
-export const insertVendorSchema = createInsertSchema(vendors).omit({
-  id: true,
+export const insertVendorSchema = vendorsSchema.omit({ id: true,
   submittedDate: true,
-});
+ });
 
-export const insertJobSeekerSchema = createInsertSchema(jobSeekers).omit({
-  id: true,
-  createdAt: true,
-}).extend({
+export const insertJobSeekerSchema = jobSeekersSchema.omit({ "id": true, "createdAt": true }).extend({
   password: z.string().min(6, "Password must be at least 6 characters"),
   email: z.string().email("Invalid email address"),
 });
@@ -605,90 +565,196 @@ export const jobSeekerLoginSchema = z.object({
 });
 
 export type InsertJob = z.infer<typeof insertJobSchema>;
-export type Job = typeof jobs.$inferSelect;
+
 export type InsertApplication = z.infer<typeof insertApplicationSchema>;
-export type Application = typeof applications.$inferSelect;
+
 export type InsertContact = z.infer<typeof insertContactSchema>;
-export type Contact = typeof contacts.$inferSelect;
+
 export type InsertResume = z.infer<typeof insertResumeSchema>;
-export type Resume = typeof resumes.$inferSelect;
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+
 export type LoginCredentials = z.infer<typeof loginSchema>;
 export type InsertVendor = z.infer<typeof insertVendorSchema>;
-export type Vendor = typeof vendors.$inferSelect;
+
 export type InsertJobSeeker = z.infer<typeof insertJobSeekerSchema>;
-export type JobSeeker = typeof jobSeekers.$inferSelect;
+
 export type JobSeekerLoginCredentials = z.infer<typeof jobSeekerLoginSchema>;
 
 // ─── Super Admin Enterprise CRM Extensions ─────────────────────────────────────
 
-export const subscriptions = pgTable("subscriptions", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  companyId: varchar("company_id").notNull(),
-  planId: text("plan_id").notNull(),
-  status: text("status").notNull().default("active"),
-  startDate: timestamp("start_date").notNull().default(sql`now()`),
-  endDate: timestamp("end_date"),
-  autoRenew: boolean("auto_renew").notNull().default(true),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const subscriptionsSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  planId: z.string(),
+  status: z.string().optional(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  autoRenew: z.boolean().optional(),
+  createdAt: z.date().optional(),
 });
+export type Subscription = z.infer<typeof subscriptionsSchema>;
 
-export const payments = pgTable("payments", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  companyId: varchar("company_id").notNull(),
-  subscriptionId: varchar("subscription_id"),
-  amountInr: integer("amount_inr").notNull(),
-  status: text("status").notNull().default("pending"),
-  paymentMethod: text("payment_method"),
-  transactionId: text("transaction_id"),
-  invoiceUrl: text("invoice_url"),
-  paidAt: timestamp("paid_at"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const paymentsSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  subscriptionId: z.string().optional(),
+  amountInr: z.number(),
+  status: z.string().optional(),
+  paymentMethod: z.string().optional(),
+  transactionId: z.string().optional(),
+  invoiceUrl: z.string().optional(),
+  paidAt: z.date().optional(),
+  createdAt: z.date().optional(),
 });
+export type Payment = z.infer<typeof paymentsSchema>;
 
-export const supportTickets = pgTable("support_tickets", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: integer("user_id"),
-  companyId: varchar("company_id"),
-  subject: text("subject").notNull(),
-  description: text("description").notNull(),
-  status: text("status").notNull().default("open"),
-  priority: text("priority").notNull().default("medium"),
-  assignedTo: integer("assigned_to"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
-  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+export const supportTicketsSchema = z.object({
+  id: z.string().optional(),
+  userId: z.number().optional(),
+  companyId: z.string().optional(),
+  subject: z.string(),
+  description: z.string(),
+  status: z.string().optional(),
+  priority: z.string().optional(),
+  assignedTo: z.number().optional(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
 });
+export type SupportTicket = z.infer<typeof supportTicketsSchema>;
 
-export const auditLogs = pgTable("audit_logs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: integer("user_id").notNull(),
-  action: text("action").notNull(),
-  resourceType: text("resource_type").notNull(),
-  resourceId: text("resource_id"),
-  details: jsonb("details"),
-  ipAddress: text("ip_address"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const auditLogsSchema = z.object({
+  id: z.string().optional(),
+  userId: z.number(),
+  action: z.string(),
+  resourceType: z.string(),
+  resourceId: z.string().optional(),
+  details: z.any().optional(),
+  ipAddress: z.string().optional(),
+  createdAt: z.date().optional(),
 });
+export type AuditLog = z.infer<typeof auditLogsSchema>;
 
-export const notifications = pgTable("notifications", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: integer("user_id").notNull(),
-  title: text("title").notNull(),
-  message: text("message").notNull(),
-  type: text("type").notNull().default("info"),
-  isRead: boolean("is_read").notNull().default(false),
-  link: text("link"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
+export const notificationsSchema = z.object({
+  id: z.string().optional(),
+  userId: z.number(),
+  title: z.string(),
+  message: z.string(),
+  type: z.string().optional(),
+  isRead: z.boolean().optional(),
+  link: z.string().optional(),
+  createdAt: z.date().optional(),
 });
+export type Notification = z.infer<typeof notificationsSchema>;
 
-export const insertSubscriptionSchema = createInsertSchema(subscriptions);
-export type Subscription = typeof subscriptions.$inferSelect;
-export const insertPaymentSchema = createInsertSchema(payments);
-export type Payment = typeof payments.$inferSelect;
-export const insertSupportTicketSchema = createInsertSchema(supportTickets);
-export type SupportTicket = typeof supportTickets.$inferSelect;
-export const insertAuditLogSchema = createInsertSchema(auditLogs);
-export type AuditLog = typeof auditLogs.$inferSelect;
-export const insertNotificationSchema = createInsertSchema(notifications);
-export type Notification = typeof notifications.$inferSelect;
+export const insertSubscriptionSchema = subscriptionsSchema;
+
+export const insertPaymentSchema = paymentsSchema;
+
+export const insertSupportTicketSchema = supportTicketsSchema;
+
+export const insertAuditLogSchema = auditLogsSchema;
+
+export const insertNotificationSchema = notificationsSchema;
+
+
+// ─── Zero-Touch Onboarding & RBAC ─────────────────────────────────────────────
+
+export const rolesSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  isSystem: z.boolean().optional(),
+  createdAt: z.date().optional(),
+});
+export type Role = z.infer<typeof rolesSchema>;
+
+export const permissionsSchema = z.object({
+  id: z.string().optional(),
+  roleId: z.string(),
+  resource: z.string(),
+  action: z.string(),
+});
+export type Permission = z.infer<typeof permissionsSchema>;
+
+export const userRolesSchema = z.object({
+  id: z.string().optional(),
+  userId: z.number(),
+  roleId: z.string(),
+  createdAt: z.date().optional(),
+});
+export type UserRoleRecord = z.infer<typeof userRolesSchema>;
+
+export const departmentsSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  createdAt: z.date().optional(),
+});
+export type Department = z.infer<typeof departmentsSchema>;
+
+export const companySettingsSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  timezone: z.string().optional(),
+  brandColor: z.string().optional(),
+  logoUrl: z.string().optional(),
+  careerPageSlug: z.string().optional(),
+  webhookSecret: z.string().optional(),
+  updatedAt: z.date().optional(),
+});
+export type CompanySetting = z.infer<typeof companySettingsSchema>;
+
+export const emailTemplatesSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  name: z.string(),
+  subject: z.string(),
+  bodyHtml: z.string(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+export type EmailTemplate = z.infer<typeof emailTemplatesSchema>;
+
+export const pipelinesSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  name: z.string(),
+  stages: z.any(),
+  isDefault: z.boolean().optional(),
+  createdAt: z.date().optional(),
+});
+export type Pipeline = z.infer<typeof pipelinesSchema>;
+
+export const invitesSchema = z.object({
+  id: z.string().optional(),
+  companyId: z.string(),
+  email: z.string(),
+  roleId: z.string(),
+  token: z.string(),
+  status: z.string().optional(),
+  invitedBy: z.number().optional(),
+  expiresAt: z.date(),
+  createdAt: z.date().optional(),
+});
+export type Invite = z.infer<typeof invitesSchema>;
+
+// ─── Export schemas and types ──────────────────────────────────────────────────
+export const insertRoleSchema = rolesSchema;
+
+export const insertPermissionSchema = permissionsSchema;
+
+export const insertUserRoleSchema = userRolesSchema;
+
+export const insertDepartmentSchema = departmentsSchema;
+
+export const insertCompanySettingsSchema = companySettingsSchema;
+
+export const insertEmailTemplateSchema = emailTemplatesSchema;
+
+export const insertPipelineSchema = pipelinesSchema;
+
+export const insertInviteSchema = invitesSchema;
+

@@ -12,6 +12,7 @@ import SuperAdminLayout from "./components/layout/SuperAdminLayout";
 const Admin = React.lazy(() => import("./pages/Admin"));
 const SignIn = React.lazy(() => import("./pages/SignIn"));
 const CompanySignUp = React.lazy(() => import("./pages/CompanySignUp"));
+const Onboarding = React.lazy(() => import("./pages/Onboarding"));
 const Dashboard = React.lazy(() => import("./pages/superadmin/Dashboard"));
 
 // If a not-found page is available, you can add it here.
@@ -32,6 +33,8 @@ function Router() {
         <Route path="/admin/signup" component={CompanySignUp} />
         <Route path="/login"><Redirect to="/admin/signin" /></Route>
         <Route path="/signin"><Redirect to="/admin/signin" /></Route>
+
+        <ProtectedRoute path="/admin/onboarding" component={Onboarding} />
 
         {/* Super Admin Routes with Layout */}
         <Route path="/super-admin">

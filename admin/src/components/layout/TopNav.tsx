@@ -38,16 +38,14 @@ export default function TopNav() {
         </Button>
         
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary/10 text-primary font-medium text-sm">
-                  {user?.username?.substring(0, 2).toUpperCase() || 'SA'}
-                </AvatarFallback>
-              </Avatar>
-            </Button>
+          <DropdownMenuTrigger className="relative h-8 w-8 rounded-full bg-transparent border-none p-0 cursor-pointer">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback className="bg-primary/10 text-primary font-medium text-sm">
+                {user?.username?.substring(0, 2).toUpperCase() || 'SA'}
+              </AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end" forceMount>
+          <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">{user?.fullName || user?.username}</p>

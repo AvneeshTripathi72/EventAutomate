@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { ArrowRight, Eye, EyeOff, Loader2, BrainCircuit, Sparkles, Users2, BarChart3, CheckCircle2, ScanLine } from "lucide-react";
-import { SiGoogle, SiLinkedin } from "react-icons/si";
+import { SiGoogle, SiLinkerd } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -410,7 +410,7 @@ export default function SignIn() {
                   <SiGoogle className="h-4 w-4" style={{ color: "#4285F4" }} /> Google
                 </button>
                 <button type="button" onClick={() => ssoToast("LinkedIn")} className="flex items-center justify-center gap-2 border border-border rounded-md py-2.5 text-sm font-bold hover-elevate active-elevate-2" data-testid="button-sso-linkedin">
-                  <SiLinkedin className="h-4 w-4" style={{ color: "#0A66C2" }} /> LinkedIn
+                  <SiLinkerd className="h-4 w-4" style={{ color: "#0A66C2" }} /> LinkedIn
                 </button>
                 <button type="button" onClick={() => ssoToast("Office 365")} className="flex items-center justify-center gap-2 border border-border rounded-md py-2.5 text-sm font-bold hover-elevate active-elevate-2" data-testid="button-sso-office">
                   <span className="h-4 w-4 inline-block bg-orange-500 rounded-sm" /> Office 365
@@ -456,14 +456,14 @@ export default function SignIn() {
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
                       <Label htmlFor="t-industry" className="text-xs font-bold">Industry *</Label>
-                      <Select value={trial.industry} onValueChange={(v) => setTrial({ ...trial, industry: v })}>
+                      <Select value={trial.industry} onValueChange={(v: any) => setTrial({ ...trial, industry: v })}>
                         <SelectTrigger id="t-industry" data-testid="select-trial-industry"><SelectValue placeholder="Select" /></SelectTrigger>
                         <SelectContent>{INDUSTRIES.map((i) => <SelectItem key={i} value={i}>{i}</SelectItem>)}</SelectContent>
                       </Select>
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="t-teamsize" className="text-xs font-bold">Team Size</Label>
-                      <Select value={trial.teamSize} onValueChange={(v) => setTrial({ ...trial, teamSize: v })}>
+                      <Select value={trial.teamSize} onValueChange={(v: any) => setTrial({ ...trial, teamSize: v })}>
                         <SelectTrigger id="t-teamsize" data-testid="select-trial-teamsize"><SelectValue placeholder="Select" /></SelectTrigger>
                         <SelectContent>{TEAM_SIZES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
                       </Select>

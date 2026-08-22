@@ -55,10 +55,10 @@ export default function CompanySignUp() {
         description: "Welcome to Tilcons CRM. Setting up your workspace...",
       });
       
-      // Auto-redirect to admin dashboard since the session is established
+      // Auto-redirect to the onboarding wizard since the session is established
       setTimeout(() => {
         // Use window.location to force a hard reload and let context fetch the user
-        window.location.href = "/admin";
+        window.location.href = "/admin/onboarding";
       }, 1000);
 
     } catch (err: any) {

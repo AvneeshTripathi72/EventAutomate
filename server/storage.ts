@@ -1,7 +1,5 @@
 
 import { supabase, toCamel, toSnake } from "./supabase";
-import session from "express-session";
-import createMemoryStore from "memorystore";
 import {
   type InsertJob, type Job, type InsertApplication, type Application, type Contact, type InsertContact,
   type Resume, type InsertResume, type User, type InsertUser, type Vendor, type InsertVendor,
@@ -9,10 +7,8 @@ import {
   type Interview, type InsertInterview, type Submission, type InsertSubmission, type Activity, type InsertActivity,
   type AiEvaluation, type AiAssessment, type AiAssessmentQuestion, type JobSeeker, type UpdateJobSeeker,
   type Onboarding, type InsertOnboarding, type Invoice, type InsertInvoice, type ESignature, type InsertESignature,
-  type BackgroundCheck, type InsertBackgroundCheck, type EmailMessage, type InsertEmail, type Meeting, type InsertMeeting
+  type BackgroundCheck, type InsertBackgroundCheck, type Email, type InsertEmail, type Meeting, type InsertMeeting
 } from "@shared/schema";
-
-const MemoryStore = createMemoryStore(session);
 
 export interface PublicStats {
   activeJobs: number; partnerCompanies: number; registeredCandidates: number; successfulPlacements: number; publishedArticles: number; industriesCovered: number;
@@ -95,20 +91,20 @@ export interface IStorage {
   createBackgroundCheck(input: InsertBackgroundCheck, ownerUserId: string): Promise<BackgroundCheck>;
   updateBackgroundCheck(id: string, ownerUserId: string, updates: Partial<InsertBackgroundCheck>): Promise<BackgroundCheck | undefined>;
   deleteBackgroundCheck(id: string, ownerUserId: string): Promise<boolean>;
-  getAllEmails(ownerUserId: string): Promise<EmailMessage[]>;
-  createEmail(input: InsertEmail, ownerUserId: string): Promise<EmailMessage>;
-  updateEmail(id: string, ownerUserId: string, updates: Partial<InsertEmail>): Promise<EmailMessage | undefined>;
+  getAllEmails(ownerUserId: string): Promise<Email[]>;
+  createEmail(input: InsertEmail, ownerUserId: string): Promise<Email>;
+  updateEmail(id: string, ownerUserId: string, updates: Partial<InsertEmail>): Promise<Email | undefined>;
   deleteEmail(id: string, ownerUserId: string): Promise<boolean>;
   getAllMeetings(ownerUserId: string): Promise<Meeting[]>;
   createMeeting(input: InsertMeeting, ownerUserId: string): Promise<Meeting>;
   updateMeeting(id: string, ownerUserId: string, updates: Partial<InsertMeeting>): Promise<Meeting | undefined>;
   deleteMeeting(id: string, ownerUserId: string): Promise<boolean>;
-  sessionStore: session.Store;
+  sessionStore: any;
 }
 
 export class SupabaseStorage implements IStorage {
-  public sessionStore: session.Store;
-  constructor() { this.sessionStore = new MemoryStore({ checkPeriod: 86400000 }); }
+  public sessionStore: any;
+  constructor() { this.sessionStore = {} as any; }
 
   async init() {}
 
@@ -208,9 +204,9 @@ export class SupabaseStorage implements IStorage {
   async updateBackgroundCheck(id: string, o: string, updates: Partial<InsertBackgroundCheck>): Promise<BackgroundCheck | undefined> { const { data } = await supabase.from('background_checks').update(toSnake(updates)).eq('id', id).eq('owner_user_id', o).select().single(); return data ? toCamel(data) : undefined; }
   async deleteBackgroundCheck(id: string, o: string): Promise<boolean> { const { data } = await supabase.from('background_checks').delete().eq('id', id).eq('owner_user_id', o).select(); return !!data?.length; }
 
-  async getAllEmails(o: string): Promise<EmailMessage[]> { const { data } = await supabase.from('emails').select('*').eq('owner_user_id', o); return toCamel(data || []); }
-  async createEmail(input: InsertEmail, o: string): Promise<EmailMessage> { const { data } = await supabase.from('emails').insert(toSnake({...input, ownerUserId: o})).select().single(); return toCamel(data); }
-  async updateEmail(id: string, o: string, updates: Partial<InsertEmail>): Promise<EmailMessage | undefined> { const { data } = await supabase.from('emails').update(toSnake(updates)).eq('id', id).eq('owner_user_id', o).select().single(); return data ? toCamel(data) : undefined; }
+  async getAllEmails(o: string): Promise<Email[]> { const { data } = await supabase.from('emails').select('*').eq('owner_user_id', o); return toCamel(data || []); }
+  async createEmail(input: InsertEmail, o: string): Promise<Email> { const { data } = await supabase.from('emails').insert(toSnake({...input, ownerUserId: o})).select().single(); return toCamel(data); }
+  async updateEmail(id: string, o: string, updates: Partial<InsertEmail>): Promise<Email | undefined> { const { data } = await supabase.from('emails').update(toSnake(updates)).eq('id', id).eq('owner_user_id', o).select().single(); return data ? toCamel(data) : undefined; }
   async deleteEmail(id: string, o: string): Promise<boolean> { const { data } = await supabase.from('emails').delete().eq('id', id).eq('owner_user_id', o).select(); return !!data?.length; }
 
   async getAllMeetings(o: string): Promise<Meeting[]> { const { data } = await supabase.from('meetings').select('*').eq('owner_user_id', o); return toCamel(data || []); }

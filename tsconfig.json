@@ -22,7 +22,8 @@
       "@/*": ["./src/*", "./client/src/*"],
       "@shared/*": ["./shared/*"],
       "@assets/*": ["./client/src/assets/*"]
-    }
+    },
+    "types": ["vite/client"]
   },
   "include": [
     "next-env.d.ts",
