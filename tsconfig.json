@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*", "./client/src/*"],
+      "@shared/*": ["./shared/*"],
+      "@assets/*": ["./client/src/assets/*"]
     }
   },
   "include": [
@@ -28,7 +30,12 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "client/src/**/*",
+    "shared/**/*",
+    "server/**/*",
+    "admin/src/**/*",
+    "candidate/src/**/*"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"]
 }
