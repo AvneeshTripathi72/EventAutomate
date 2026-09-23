@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { ENV } from "@/lib/env";
+import { createRamQueryBuilder } from "@/lib/ram-store";
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -28,6 +29,7 @@ export async function createClient() {
   );
 
   if (hasBypass) {
+    client.from = ((table: string) => createRamQueryBuilder(table)) as any;
     client.auth.getUser = async () => {
       return {
         data: {

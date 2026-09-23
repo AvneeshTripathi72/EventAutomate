@@ -111,3 +111,104 @@ export const ramStore = {
     return globalThis.__RAM_STORE__!.payments.get(orgSlug) || [];
   },
 };
+
+export function createRamQueryBuilder(table: string) {
+  const filters: Record<string, any> = {};
+
+  const builder: any = {
+    select(fields?: string, opts?: any) {
+      return builder;
+    },
+    eq(col: string, val: any) {
+      filters[col] = val;
+      return builder;
+    },
+    in(col: string, vals: any[]) {
+      return builder;
+    },
+    order() {
+      return builder;
+    },
+    limit() {
+      return builder;
+    },
+    single() {
+      return builder.then((res: any) => ({
+        data: Array.isArray(res.data) ? (res.data[0] || null) : res.data,
+        error: null,
+      }));
+    },
+    insert(val: any) {
+      const inserted = Array.isArray(val) ? val.map((v, i) => ({ id: `ram-${Date.now()}-${i}`, ...v })) : { id: `ram-${Date.now()}`, ...val };
+      return {
+        select() {
+          return {
+            single: async () => ({ data: Array.isArray(inserted) ? inserted[0] : inserted, error: null }),
+          };
+        },
+        then: (resolve: any) => resolve({ data: inserted, error: null }),
+      };
+    },
+    update(val: any) {
+      return {
+        eq: () => ({
+          select: () => ({
+            single: async () => ({ data: val, error: null }),
+          }),
+        }),
+        then: (resolve: any) => resolve({ data: val, error: null }),
+      };
+    },
+    delete() {
+      return {
+        eq: () => ({
+          select: () => async () => ({ data: [], error: null }),
+        }),
+        then: (resolve: any) => resolve({ data: [], error: null }),
+      };
+    },
+    then(resolve: any) {
+      let data: any[] = [];
+
+      if (table === "organizations") {
+        data = ramStore.getOrganizations();
+        if (filters["slug"]) {
+          data = data.filter((o: any) => o.slug === filters["slug"]);
+        }
+        if (filters["id"]) {
+          data = data.filter((o: any) => o.id === filters["id"]);
+        }
+      } else if (table === "forms") {
+        data = ramStore.getForms();
+        if (filters["id"]) {
+          data = data.filter((f: any) => f.id === filters["id"]);
+        }
+        if (filters["organization_id"]) {
+          data = data.filter((f: any) => f.organization_id === filters["organization_id"]);
+        }
+      } else if (table === "members" || table === "organization_members") {
+        data = [
+          {
+            id: "ram-member-1",
+            organization_id: filters["organization_id"] || "default-org-id",
+            role: "OWNER",
+            sidebar_permissions: ["ALL"],
+            organizations: {
+              id: "default-org-id",
+              name: "Default Organization",
+              slug: "default-org",
+            },
+          },
+        ];
+      } else if (table === "payments") {
+        data = ramStore.getPayments();
+      } else if (table === "submissions") {
+        data = [];
+      }
+
+      return Promise.resolve(resolve({ data, count: data.length, error: null }));
+    },
+  };
+
+  return builder;
+}

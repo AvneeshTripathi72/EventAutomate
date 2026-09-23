@@ -40,16 +40,13 @@ export default function LoginPage() {
     }
   }
 
-  async function handleBypass() {
+  function handleBypass() {
     setIsBypassing(true);
-    setError(null);
+    document.cookie = "auth_bypass=true; path=/; max-age=604800; SameSite=Lax";
     try {
-      document.cookie = "auth_bypass=true; path=/; max-age=604800; SameSite=Lax";
-      await bypassLogin();
-    } catch (e: any) {
-      console.warn("Bypass login warning:", e);
-    }
-    window.location.href = "/dashboard";
+      bypassLogin().catch(() => {});
+    } catch {}
+    window.location.replace("/dashboard/default-org");
   }
 
   return (
