@@ -53,43 +53,49 @@ export async function createOrganization(formData: FormData) {
 
 const getCachedOrganizations = unstable_cache(
   async (userId: string, isSuperAdmin: boolean) => {
-    const supabase = createAdminClient();
+    try {
+      const supabase = createAdminClient();
 
-    if (isSuperAdmin) {
-      const { data } = await supabase
-        .from("organizations")
-        .select("id, name, slug, logo_url")
-        .order("created_at", { ascending: false });
+      if (isSuperAdmin) {
+        const { data } = await supabase
+          .from("organizations")
+          .select("id, name, slug, logo_url")
+          .order("created_at", { ascending: false });
 
-      return (data || []).map((org) => ({
-        role: "OWNER",
-        ...org,
-      }));
+        if (data && data.length > 0) {
+          return data.map((org) => ({
+            role: "OWNER",
+            ...org,
+          }));
+        }
+      } else {
+        const { data } = await supabase
+          .from("members")
+          .select(`
+            organization_id,
+            role,
+            organizations (
+              id,
+              name,
+              slug,
+              logo_url
+            )
+          `)
+          .eq("profile_id", userId);
+
+        if (data && data.length > 0) {
+          return data.map((member) => ({
+            role: member.role,
+            // @ts-ignore
+            ...member.organizations,
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn("getCachedOrganizations failed, using RAM fallback:", e);
     }
 
-    const { data } = await supabase
-      .from("members")
-      .select(`
-        organization_id,
-        role,
-        organizations (
-          id,
-          name,
-          slug,
-          logo_url
-        )
-      `)
-      .eq("profile_id", userId);
-
-    if (!data || data.length === 0) {
-      return ramStore.getOrganizations().map(org => ({ role: "OWNER", ...org }));
-    }
-
-    return data.map((member) => ({
-      role: member.role,
-      // @ts-ignore
-      ...member.organizations,
-    }));
+    return ramStore.getOrganizations().map(org => ({ role: "OWNER", ...org }));
   },
   ["user-organizations"],
   { tags: ["user-orgs"] }

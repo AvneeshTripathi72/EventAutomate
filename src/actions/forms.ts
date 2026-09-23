@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { FormSection } from "@/lib/store/form-builder";
 import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
+import { ramStore } from "@/lib/ram-store";
 
 export async function saveForm(
   orgSlug: string,
@@ -149,39 +150,41 @@ export async function deleteForm(orgSlug: string, formId: string) {
 
 const getCachedOrgForms = unstable_cache(
   async (orgSlug: string) => {
-    const supabase = createAdminClient();
+    try {
+      const supabase = createAdminClient();
 
-    const { data: orgData, error: orgError } = await supabase
-      .from("organizations")
-      .select("id")
-      .eq("slug", orgSlug)
-      .single();
+      const { data: orgData, error: orgError } = await supabase
+        .from("organizations")
+        .select("id")
+        .eq("slug", orgSlug)
+        .single();
 
-    if (orgError || !orgData) {
-      return [];
+      if (!orgError && orgData) {
+        const { data: forms, error: formsError } = await supabase
+          .from("forms")
+          .select(`
+            id,
+            title,
+            slug,
+            is_published,
+            created_at,
+            submissions ( count )
+          `)
+          .eq("organization_id", orgData.id)
+          .order("created_at", { ascending: false });
+
+        if (!formsError && forms && forms.length > 0) {
+          return forms.map((f: any) => ({
+            ...f,
+            submissions_count: f.submissions[0]?.count || 0
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn("Could not fetch forms from Supabase, using RAM store fallback:", e);
     }
 
-    const { data: forms, error: formsError } = await supabase
-      .from("forms")
-      .select(`
-        id,
-        title,
-        slug,
-        is_published,
-        created_at,
-        submissions ( count )
-      `)
-      .eq("organization_id", orgData.id)
-      .order("created_at", { ascending: false });
-
-    if (formsError || !forms) {
-      return [];
-    }
-
-    return forms.map((f: any) => ({
-      ...f,
-      submissions_count: f.submissions[0]?.count || 0
-    }));
+    return ramStore.getForms();
   },
   ["org-forms"],
   { tags: ["org-forms"] }

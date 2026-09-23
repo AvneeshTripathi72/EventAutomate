@@ -28,13 +28,7 @@ export async function createClient() {
   );
 
   if (hasBypass) {
-    const originalGetUser = client.auth.getUser.bind(client.auth);
-    client.auth.getUser = async (jwt?: string) => {
-      try {
-        const res = await originalGetUser(jwt);
-        if (res.data?.user) return res;
-      } catch {}
-
+    client.auth.getUser = async () => {
       return {
         data: {
           user: {

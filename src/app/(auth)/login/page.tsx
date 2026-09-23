@@ -44,12 +44,12 @@ export default function LoginPage() {
     setIsBypassing(true);
     setError(null);
     try {
+      document.cookie = "auth_bypass=true; path=/; max-age=604800; SameSite=Lax";
       await bypassLogin();
-      window.location.href = "/dashboard";
     } catch (e: any) {
       console.warn("Bypass login warning:", e);
-      window.location.href = "/dashboard";
     }
+    window.location.href = "/dashboard";
   }
 
   return (

@@ -77,29 +77,6 @@ export async function bypassLogin() {
     maxAge: 60 * 60 * 24 * 7,
   });
 
-  try {
-    const supabase = await createClient();
-    const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || ENV.SUPER_ADMIN_EMAIL;
-    const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD || ENV.SUPER_ADMIN_PASSWORD;
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: superAdminEmail,
-      password: superAdminPassword,
-    });
-
-    if (error) {
-      await supabase.auth.signUp({
-        email: superAdminEmail,
-        password: superAdminPassword,
-        options: {
-          data: { full_name: "Super Admin" },
-        },
-      });
-    }
-  } catch (e) {
-    console.warn("Supabase auth bypass failed, continuing with cookie bypass:", e);
-  }
-
   revalidatePath("/", "layout");
   return { success: true };
 }

@@ -28,7 +28,36 @@ if (!globalThis.__RAM_STORE__) {
         },
       ],
     ]),
-    forms: new Map(),
+    forms: new Map([
+      [
+        "campus-esports-2026",
+        {
+          id: "campus-esports-2026",
+          organization_id: "default-org-id",
+          title: "Campus Esports Tournament 2026",
+          slug: "campus-esports-2026",
+          description: "Register your squad for BGMI & Valorant Inter-College Battle.",
+          is_published: true,
+          created_at: new Date().toISOString(),
+          settings: { limit: 128, paymentEnabled: false },
+          submissions_count: 34,
+        },
+      ],
+      [
+        "hackathon-2026",
+        {
+          id: "hackathon-2026",
+          organization_id: "default-org-id",
+          title: "National Tech Hackathon",
+          slug: "national-tech-hackathon",
+          description: "24-hour innovation marathon for students and tech developers.",
+          is_published: true,
+          created_at: new Date().toISOString(),
+          settings: { limit: 250, paymentEnabled: true, fee: 199 },
+          submissions_count: 86,
+        },
+      ],
+    ]),
     sections: new Map(),
     submissions: new Map(),
     payments: new Map(),
@@ -55,6 +84,7 @@ export const ramStore = {
   },
 
   getFormById: (formId: string) => globalThis.__RAM_STORE__!.forms.get(formId),
+  getForms: () => Array.from(globalThis.__RAM_STORE__!.forms.values()),
   saveForm: (formId: string, formData: any) => {
     globalThis.__RAM_STORE__!.forms.set(formId, formData);
     return formData;

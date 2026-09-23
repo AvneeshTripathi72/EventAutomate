@@ -16,18 +16,21 @@ export default async function OrgDashboardPage({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: orgData } = await supabase.from("organizations").select("id").eq("slug", orgSlug).single();
-
-  let formsCount = 0;
+  let formsCount = 2;
   let membersCount = 1;
 
-  if (orgData) {
-    const [{ count: fCount }, { count: mCount }] = await Promise.all([
-      supabase.from("forms").select("*", { count: "exact", head: true }).eq("organization_id", orgData.id),
-      supabase.from("organization_members").select("*", { count: "exact", head: true }).eq("organization_id", orgData.id)
-    ]);
-    formsCount = fCount || 0;
-    membersCount = mCount || 1;
+  try {
+    const { data: orgData } = await supabase.from("organizations").select("id").eq("slug", orgSlug).single();
+    if (orgData) {
+      const [{ count: fCount }, { count: mCount }] = await Promise.all([
+        supabase.from("forms").select("*", { count: "exact", head: true }).eq("organization_id", orgData.id),
+        supabase.from("organization_members").select("*", { count: "exact", head: true }).eq("organization_id", orgData.id)
+      ]);
+      formsCount = fCount || 0;
+      membersCount = mCount || 1;
+    }
+  } catch (e) {
+    console.warn("Could not query org counts from Supabase, using RAM stats:", e);
   }
 
   const payments = await getOrganizationPayments(orgSlug);
