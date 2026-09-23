@@ -1,16 +1,17 @@
-# ESportHub - Tournament Management Platform
+# EventAutomate - College & School Event Automation Platform
 
-ESportHub is a comprehensive web application built for managing esports tournaments, team registrations, and payments. It provides organizations with the tools they need to host events, collect player data, and manage revenue efficiently.
+EventAutomate is an all-in-one web application built for managing college and school events, student fests, hackathons, workshops, club registrations, and ticketing. It empowers student councils, campus clubs, and educational institutions with the tools they need to automate event registration, collect attendee details, generate digital passes, and manage registrations seamlessly.
 
 ## 🚀 Key Features
 
-* **Custom Form Builder:** Create dynamic registration forms for tournaments with custom fields (IGN, Discord, Email, Phone, etc.).
-* **Payment Integration:** Seamlessly integrated with **Razorpay** to collect tournament entry fees securely via a native popup checkout.
-* **Automated Webhooks:** Robust Razorpay webhook integration to ensure payments and registrations are recorded even if the user closes the browser early.
-* **Team Management:** Automatically extracts and manages team information from form submissions, allowing organizations to view and organize participants.
-* **Permanent Analytics Data:** Features an `analytics_teams` and `analytics_payments` system to ensure crucial registration and financial data is never lost, even if the original forms are deleted.
-* **Role-Based Access Control:** Advanced roles including Super Admins, Organization Admins, Moderators, and Viewers.
-* **Modern UI:** Built with Tailwind CSS and shadcn/ui for a premium, dark-themed gaming aesthetic.
+* **Custom Event Form Builder:** Create dynamic registration forms for campus events, hackathons, seminars, and club recruitments with custom student fields (Student ID / Roll No, College Email, Department, Year, etc.).
+* **Payment Integration:** Seamlessly integrated with **Razorpay** to collect event and fest registration fees securely via a native checkout popup.
+* **Automated Webhooks:** Robust Razorpay webhook integration to ensure payments and registrations are recorded even if attendees close the browser early.
+* **Participant & Team Management:** Automatically extracts and manages participant and team information from form submissions, allowing organizers to view and organize attendees.
+* **Broadcast Announcements & Passes:** Send mass email announcements, schedules, and event credentials directly to registered student participants.
+* **Permanent Analytics Data:** Features an `analytics_teams` and `analytics_payments` system to ensure crucial registration and financial data is never lost, even if original forms are archived.
+* **Role-Based Access Control:** Advanced roles including Super Admins, Campus Organizers, Moderators, and Viewers.
+* **Modern UI:** Built with Tailwind CSS and shadcn/ui for a responsive, modern dark-themed aesthetic.
 
 ## 🛠️ Tech Stack
 

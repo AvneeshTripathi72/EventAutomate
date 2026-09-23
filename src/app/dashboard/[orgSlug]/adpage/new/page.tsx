@@ -13,67 +13,67 @@ import { createAdPage } from "@/actions/adpages";
 
 const TEMPLATES = [
   {
-    id: "tournament",
-    name: "Tournament",
+    id: "campus-fest",
+    name: "College Fest & Hackathon",
     icon: Trophy,
     data: {
-      badge: "Major Tournament 2026",
-      title: "ESportHub Championship",
-      subtitle: "Assemble your squad, master your strategy, and compete against the best for ultimate glory and a share of the $10,000 prize pool.",
-      date: "Aug 15 - Aug 31",
-      prize: "$10,000 Prize Pool",
-      location: "Global Online",
+      badge: "Annual Campus Fest 2026",
+      title: "Inter-College Innovation Challenge",
+      subtitle: "Assemble your squad, build innovative solutions, and compete against the brightest college minds for glory and exciting prizes.",
+      date: "Oct 10 - Oct 15",
+      prize: "₹1,50,000 Prize Pool",
+      location: "Campus Auditorium & Labs",
       cta: "Register Your Team Now",
-      bgImage: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
-      registrationLink: "/dashboard/soul/event-registration"
+      bgImage: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop",
+      registrationLink: "/event-registration"
     }
   },
   {
-    id: "launch",
-    name: "Product Launch",
+    id: "club-orientation",
+    name: "Club Orientation",
     icon: Rocket,
     data: {
-      badge: "New Release",
-      title: "Introducing X-Gear Pro",
-      subtitle: "Experience the next level of gaming performance with our latest peripherals. Designed by pros, for pros.",
-      date: "Available Now",
-      prize: "Special Discount",
-      location: "Store Online",
-      cta: "Shop Now",
-      bgImage: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop",
-      registrationLink: "https://store.esporthub.com"
+      badge: "Fall Orientation",
+      title: "Student Club & Society Showcase",
+      subtitle: "Discover premier student communities, workshops, and extracurricular activities tailored for undergraduate and graduate students.",
+      date: "Coming this Friday",
+      prize: "Free Entry & Kits",
+      location: "Main Campus Quad",
+      cta: "RSVP For Pass",
+      bgImage: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop",
+      registrationLink: "https://events.eventautomate.com/orientation"
     }
   },
   {
-    id: "recruitment",
-    name: "Recruitment",
+    id: "council-recruitment",
+    name: "Society Recruitment",
     icon: Briefcase,
     data: {
-      badge: "Hiring Now",
-      title: "Join Our Roster",
-      subtitle: "We are looking for top-tier talent to join our Valorant and CS2 squads for the upcoming season.",
-      date: "Applications Open",
-      prize: "Salary + Benefits",
-      location: "Remote / NA",
-      cta: "Apply Today",
-      bgImage: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071&auto=format&fit=crop",
-      registrationLink: "https://careers.esporthub.com"
+      badge: "Applications Open",
+      title: "Join The Student Council / Society",
+      subtitle: "We are recruiting student leaders, designers, event managers, and developers for the upcoming academic year.",
+      date: "Deadline: Sept 30",
+      prize: "Leadership Experience & Certificate",
+      location: "Student Center",
+      cta: "Apply Now",
+      bgImage: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop",
+      registrationLink: "https://events.eventautomate.com/recruitment"
     }
   },
   {
-    id: "sponsorship",
-    name: "Sponsorship",
+    id: "fest-sponsorship",
+    name: "Campus Sponsorship",
     icon: Megaphone,
     data: {
       badge: "Partner With Us",
-      title: "Season 2026 Sponsorships",
-      subtitle: "Connect your brand with millions of passionate gamers. We offer premium placement and engagement opportunities.",
-      date: "Season Starts Sept 1",
-      prize: "Maximized ROI",
-      location: "Global Reach",
-      cta: "View Pitch Deck",
-      bgImage: "https://images.unsplash.com/photo-1563810156942-834468f3dbbe?q=80&w=2070&auto=format&fit=crop",
-      registrationLink: "/sponsorship-deck.pdf"
+      title: "College Fest Corporate Sponsorship",
+      subtitle: "Connect your company with 10,000+ top engineering and college students. Premium branding, hackathon tracks, and hiring visibility.",
+      date: "Fest Date: Oct 15",
+      prize: "10,000+ Student Impressions",
+      location: "University Campus",
+      cta: "Download Brochure",
+      bgImage: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=2070&auto=format&fit=crop",
+      registrationLink: "/sponsorship-brochure.pdf"
     }
   },
   {

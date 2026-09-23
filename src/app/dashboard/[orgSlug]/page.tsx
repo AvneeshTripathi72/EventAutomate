@@ -89,13 +89,13 @@ export default async function OrgDashboardPage({
         </Card>
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Active Matches</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Active Events</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">0</div>
             <p className="text-xs text-muted-foreground mt-1">
-              Tournaments in progress
+              Campus events in progress
             </p>
           </CardContent>
         </Card>
@@ -106,7 +106,7 @@ export default async function OrgDashboardPage({
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
             <CardDescription>
-              Your latest form submissions and match results.
+              Your latest registrations and event participants.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col text-sm h-full pb-14 space-y-4">

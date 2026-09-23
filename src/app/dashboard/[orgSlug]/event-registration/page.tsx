@@ -11,7 +11,8 @@ import {
   User,
   Mail,
   Phone,
-  Gamepad2,
+  GraduationCap,
+  Sparkles,
   Star,
   Clock,
   ArrowRight,
@@ -22,27 +23,34 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const EVENT = {
-  name: "ESportHub Championship 2026",
-  tagline: "Compete. Dominate. Claim Glory.",
-  date: "July 30 – August 15, 2026",
-  deadline: "August 31, 2026",
-  location: "Online — Global",
-  prize: "$10,000",
-  slots: 128,
-  organizer: "EsportHub Team",
-  games: ["Valorant", "CS2", "FIFA 25", "Rocket League", "PUBG"],
+  name: "Inter-College Campus Fest & Innovation Challenge 2026",
+  tagline: "Create. Innovate. Connect with top campus leaders.",
+  date: "October 10 – October 15, 2026",
+  deadline: "October 05, 2026",
+  location: "Campus Auditorium & Virtual Tracks",
+  prize: "₹1,50,000",
+  slots: 250,
+  organizer: "Student Council & EventAutomate",
+  games: [
+    "Hackathon & Coding Challenge",
+    "Robotics & Hardware Showcase",
+    "Business Pitch & Startup Idea",
+    "Technical Paper & Project Demo",
+    "Cultural Dance & Music Battle",
+    "Inter-College Debate & Quiz",
+  ],
   perks: [
-    "Cash prizes for top 3 teams",
-    "Live-streamed finals",
-    "Exclusive ESportHub champion badge",
-    "Featured spotlight on dashboard",
-    "Custom trophy for winners",
+    "Cash prizes & trophies for top teams",
+    "Verified certificates for all registered participants",
+    "Direct internship & mentorship opportunities",
+    "Automated digital entry passes & QR codes",
+    "Free workshop passes & conference kits",
   ],
   schedule: [
-    { phase: "Registration Open", date: "July 27, 2026" },
-    { phase: "Group Stage", date: "Aug 1 – Aug 10, 2026" },
-    { phase: "Semi-Finals", date: "Aug 12, 2026" },
-    { phase: "Grand Finals", date: "Aug 15, 2026" },
+    { phase: "Registration Open", date: "Sept 1, 2026" },
+    { phase: "Preliminary Round / Submissions", date: "Oct 10, 2026" },
+    { phase: "Workshops & Semi-Finals", date: "Oct 12, 2026" },
+    { phase: "Grand Finals & Prize Ceremony", date: "Oct 15, 2026" },
   ],
 };
 
@@ -165,8 +173,8 @@ export default function EventRegistrationPage() {
           <Card className="border-violet-500/20" style={{ background: "rgba(124,58,237,0.05)" }}>
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center gap-2">
-                <Gamepad2 className="h-4 w-4 text-violet-400" />
-                Supported Games
+                <Sparkles className="h-4 w-4 text-violet-400" />
+                Event Tracks &amp; Categories
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2">
@@ -214,8 +222,8 @@ export default function EventRegistrationPage() {
                     <h3 className="text-2xl font-bold mb-1">You&apos;re In! 🎉</h3>
                     <p className="text-muted-foreground max-w-sm">
                       Thanks <strong className="text-white">{form.fullName}</strong>! Your registration for the{" "}
-                      <strong className="text-violet-300">ESportHub Championship 2026</strong> is confirmed.
-                      Check <strong className="text-cyan-300">{form.email}</strong> for your confirmation.
+                      <strong className="text-violet-300">Inter-College Campus Fest & Innovation Challenge 2026</strong> is confirmed.
+                      Check <strong className="text-cyan-300">{form.email}</strong> for your automated event pass and QR code.
                     </p>
                   </div>
                   <Button
@@ -253,22 +261,22 @@ export default function EventRegistrationPage() {
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="er-gamertag" className="text-sm flex items-center gap-1.5">
-                        <Gamepad2 className="h-3.5 w-3.5 text-violet-400" /> Gamertag / IGN
+                        <GraduationCap className="h-3.5 w-3.5 text-violet-400" /> Student Roll No / ID
                       </Label>
-                      <Input id="er-gamertag" name="gamertag" placeholder="xX_ProGamer_Xx" required value={form.gamertag} onChange={handleChange} />
+                      <Input id="er-gamertag" name="gamertag" placeholder="e.g. 21BCE1042 / ID-9821" required value={form.gamertag} onChange={handleChange} />
                     </div>
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <Label htmlFor="er-teamName" className="text-sm flex items-center gap-1.5">
-                        <Users className="h-3.5 w-3.5 text-violet-400" /> Team Name
+                        <Users className="h-3.5 w-3.5 text-violet-400" /> College / Club / Team Name
                       </Label>
-                      <Input id="er-teamName" name="teamName" placeholder="Team Alpha" value={form.teamName} onChange={handleChange} />
+                      <Input id="er-teamName" name="teamName" placeholder="e.g. Stanford Tech Club / Team Nova" value={form.teamName} onChange={handleChange} />
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="er-game" className="text-sm flex items-center gap-1.5">
-                        <Trophy className="h-3.5 w-3.5 text-violet-400" /> Game
+                        <Trophy className="h-3.5 w-3.5 text-violet-400" /> Event Track / Category
                       </Label>
                       <select
                         id="er-game"
@@ -278,7 +286,7 @@ export default function EventRegistrationPage() {
                         onChange={handleChange}
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       >
-                        <option value="">Select a game…</option>
+                        <option value="">Select an event track…</option>
                         {EVENT.games.map((g) => (
                           <option key={g} value={g}>{g}</option>
                         ))}

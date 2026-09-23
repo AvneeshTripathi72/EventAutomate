@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { logout } from "@/actions/auth";
-import { Menu, PlusCircle, LogOut, User as UserIcon, Settings, Code, Check, Shield, LayoutDashboard, FileText, Users, Trophy, Gamepad2, CreditCard, Bell } from "lucide-react";
+import { Menu, PlusCircle, LogOut, User as UserIcon, Settings, Code, Check, Shield, LayoutDashboard, FileText, Users, Trophy, CalendarDays, CreditCard, Bell } from "lucide-react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -40,7 +40,7 @@ export function Topbar({ user, organizations = [], currentOrgSlug, isSuperAdmin 
           <nav className="grid gap-4 text-lg font-medium">
             <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
               <Image src="/logo.svg" alt="Logo" width={32} height={32} className="rounded-lg shadow-sm" priority />
-              <span className="tracking-tight">ESportHub</span>
+              <span className="tracking-tight">EventAutomate</span>
             </Link>
             <div className="grid gap-3 mt-4">
               <Link href={`/dashboard/${currentOrgSlug}`} className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
@@ -56,10 +56,10 @@ export function Topbar({ user, organizations = [], currentOrgSlug, isSuperAdmin 
                 <Bell className="h-5 w-5" /> Notifications
               </Link>
               <Link href={`/dashboard/${currentOrgSlug}/teams`} className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
-                <Trophy className="h-5 w-5" /> Teams
+                <Trophy className="h-5 w-5" /> Current Events
               </Link>
               <Link href={`/dashboard/${currentOrgSlug}/matches`} className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
-                <Gamepad2 className="h-5 w-5" /> Matches & History
+                <CalendarDays className="h-5 w-5" /> Events & History
               </Link>
               <Link href={`/dashboard/${currentOrgSlug}/billing`} className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
                 <CreditCard className="h-5 w-5" /> Billing

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ESportHub - Modern Gaming Form Builder",
-  description: "A modern no-code form builder for Gaming Communities, Tournament Organizers, and Event Management.",
+  title: "EventAutomate - College & School Event Automation Platform",
+  description: "Modern automated event registration, ticketing, and management platform built for college students, campus clubs, fests, and schools.",
 };
 
 export default function RootLayout({

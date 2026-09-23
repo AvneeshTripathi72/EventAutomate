@@ -40,15 +40,15 @@ export default async function FormSuccessPage({
           </p>
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 max-w-lg mt-4 text-left">
             <p className="text-foreground font-medium mb-2">
-              Your ID and pass will be provided on your email.
+              Your registration pass and confirmation will be provided on your email.
             </p>
             <p className="text-sm text-muted-foreground">
               For any issues, please contact this mail:{" "}
               <a
-                href={`mailto:${form.settings?.contactEmail || process.env.NEXT_PUBLIC_CONTACT_EMAIL || process.env.SMTP_USER || "support@esporthub.com"}`}
+                href={`mailto:${form.settings?.contactEmail || process.env.NEXT_PUBLIC_CONTACT_EMAIL || process.env.SMTP_USER || "support@eventautomate.com"}`}
                 className="text-primary hover:underline font-medium"
               >
-                {form.settings?.contactEmail || process.env.NEXT_PUBLIC_CONTACT_EMAIL || process.env.SMTP_USER || "support@esporthub.com"}
+                {form.settings?.contactEmail || process.env.NEXT_PUBLIC_CONTACT_EMAIL || process.env.SMTP_USER || "support@eventautomate.com"}
               </a>
             </p>
           </div>

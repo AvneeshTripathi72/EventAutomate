@@ -37,17 +37,17 @@ export default function OnboardingPage() {
               Create your organization
             </CardTitle>
             <CardDescription>
-              You need an organization to start building forms.
+              You need an organization or campus club to start managing events and forms.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form action={handleCreateOrg} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Organization Name</Label>
+                <Label htmlFor="name">Organization / Club Name</Label>
                 <Input
                   id="name"
                   name="name"
-                  placeholder="Team SouL Esports"
+                  placeholder="e.g. Stanford Tech Club / Student Council"
                   required
                   disabled={isPending}
                 />

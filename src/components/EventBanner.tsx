@@ -45,7 +45,7 @@ export function EventBanner({ event }: EventBannerProps) {
             className="text-[10px] font-semibold uppercase tracking-widest px-1.5 py-0.5 rounded-full"
             style={{ background: "rgba(124,58,237,0.3)", color: "#c4b5fd" }}
           >
-            🎮 Upcoming Event
+            🎓 Upcoming Campus Event
           </span>
           <p className="text-white font-bold mt-1 leading-tight">{event.name}</p>
         </div>

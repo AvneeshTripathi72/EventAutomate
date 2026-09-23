@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: { params: Promise<{ formId: s
   }
 
   return {
-    title: `${form.title} - ESportHub`,
-    description: form.description || "A public form on ESportHub.",
+    title: `${form.title} - EventAutomate`,
+    description: form.description || "Campus event registration on EventAutomate.",
   };
 }
 

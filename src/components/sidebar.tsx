@@ -10,7 +10,7 @@ import {
   Settings,
   CreditCard,
   Shield,
-  Gamepad2,
+  CalendarDays,
   Trophy,
   LogOut,
   Bell,
@@ -50,7 +50,7 @@ export function Sidebar({
     {
       id: "forms",
       href: `/dashboard/${orgSlug}/forms`,
-      label: "Create Tournament",
+      label: "Create Event",
       icon: FileText,
       active: pathname === `/dashboard/${orgSlug}/forms`,
     },
@@ -71,7 +71,7 @@ export function Sidebar({
     {
       id: "notifications",
       href: `/dashboard/${orgSlug}/notifications`,
-      label: "Send IDP",
+      label: "Send Broadcast / Passes",
       icon: Bell,
       active: pathname === `/dashboard/${orgSlug}/notifications`,
     },
@@ -92,8 +92,8 @@ export function Sidebar({
     {
       id: "matches",
       href: `/dashboard/${orgSlug}/matches`,
-      label: "Matches & History",
-      icon: Gamepad2,
+      label: "Events & History",
+      icon: CalendarDays,
       active: pathname === `/dashboard/${orgSlug}/matches`,
     },
     {
@@ -148,7 +148,7 @@ export function Sidebar({
       <div className="p-4 border-b border-border/50 shrink-0">
         <Link href="/" className="flex items-center gap-2 font-bold tracking-tight text-lg">
           <Image src="/logo.svg" alt="Logo" width={28} height={28} className="rounded-md shadow-sm" priority />
-          ESportHub
+          EventAutomate
         </Link>
       </div>
 
@@ -216,10 +216,10 @@ export function Sidebar({
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium truncate text-foreground">
-              {userEmail ? userEmail.split('@')[0] : 'Gamer'}
+              {userEmail ? userEmail.split('@')[0] : 'Campus Lead'}
             </p>
             <p className="text-xs text-muted-foreground truncate">
-              {userEmail || 'Player'}
+              {userEmail || 'Student Organizer'}
             </p>
           </div>
           <ThemeToggle />

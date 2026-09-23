@@ -1,17 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7c3aed" /> <!-- Violet 600 -->
-      <stop offset="100%" stop-color="#06b6d4" /> <!-- Cyan 500 -->
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="60%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="100%" stop-color="#f59e0b" />
     </linearGradient>
   </defs>
   
   <!-- Rounded Square Background -->
-  <rect x="5" y="5" width="90" height="90" rx="20" fill="url(#bg)" />
+  <rect x="5" y="5" width="90" height="90" rx="22" fill="url(#bg)" />
   
-  <!-- Stylized Gamepad / E -->
-  <path d="M 25 35 L 45 35 L 45 45 L 35 45 L 35 55 L 45 55 L 45 65 L 25 65 Z" fill="#ffffff" />
-  <circle cx="65" cy="40" r="6" fill="#ffffff" />
-  <circle cx="75" cy="55" r="6" fill="#ffffff" />
-  <circle cx="55" cy="55" r="6" fill="#ffffff" />
+  <!-- Academic Mortarboard Cap (College / School) -->
+  <polygon points="50,22 84,37 50,52 16,37" fill="#ffffff" />
+  
+  <!-- Cap Base Arch -->
+  <path d="M 30 44 C 30 55, 70 55, 70 44" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
+  
+  <!-- Tassel -->
+  <path d="M 76 39 V 54" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+  <circle cx="76" cy="56" r="3" fill="#ffffff" />
+  
+  <!-- Automation Lightning Spark -->
+  <polygon points="52,58 41,72 49,72 45,84 59,69 51,69" fill="url(#boltGrad)" />
 </svg>

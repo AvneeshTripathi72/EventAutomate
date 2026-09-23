@@ -6,12 +6,12 @@ import { Users, Plus, Shield, ShieldAlert, Settings, X, Loader2 } from "lucide-r
 import { inviteMember, updateMemberPermissions } from "@/actions/organizations";
 
 const SIDEBAR_OPTIONS = [
-  { id: "forms", label: "Create Tournament" },
+  { id: "forms", label: "Create Event" },
   { id: "adpage", label: "Ad Page" },
   { id: "members", label: "Members" },
-  { id: "notifications", label: "Send IDP" },
+  { id: "notifications", label: "Send Broadcast / Passes" },
   { id: "teams", label: "Current Events" },
-  { id: "matches", label: "Matches & History" },
+  { id: "matches", label: "Events & History" },
   { id: "billing", label: "Billing" },
   { id: "settings", label: "Settings" },
   { id: "event-registration", label: "Event Registration" },

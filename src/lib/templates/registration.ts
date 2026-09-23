@@ -35,7 +35,7 @@ export const getRegistrationTemplate = ({
 <body>
   <div class="container">
     <div class="header">
-      <h1>ESportHub</h1>
+      <h1>EventAutomate</h1>
     </div>
     <div class="content">
       <h2 style="color: #10b981; margin-top: 0;">Registration Successful! 🎉</h2>
@@ -44,16 +44,16 @@ export const getRegistrationTemplate = ({
 
       <div class="details">
         <div class="row"><span class="label">Registration ID</span><span class="value">${registrationId}</span></div>
-        <div class="row"><span class="label">Team Name</span><span class="value">${teamName}</span></div>
-        <div class="row"><span class="label">Tournament</span><span class="value">${tournamentName}</span></div>
+        <div class="row"><span class="label">Team / Participant</span><span class="value">${teamName}</span></div>
+        <div class="row"><span class="label">Event</span><span class="value">${tournamentName}</span></div>
         <div class="row"><span class="label">Date</span><span class="value">${date}</span></div>
         <div class="row"><span class="label">Payment Status</span><span class="value" style="color: ${paymentStatus.toLowerCase() === 'paid' ? '#10b981' : '#f59e0b'};">${paymentStatus}</span></div>
       </div>
 
-      <p>Good luck in the tournament!</p>
+      <p>We look forward to seeing you at the event!</p>
     </div>
     <div class="footer">
-      <p>This is an automated email from ESportHub. Please do not reply.</p>
+      <p>This is an automated email from EventAutomate. Please do not reply.</p>
     </div>
   </div>
 </body>

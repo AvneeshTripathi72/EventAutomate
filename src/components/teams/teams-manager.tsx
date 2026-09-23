@@ -371,7 +371,7 @@ export function TeamsManager({ initialTeams, orgSlug }: { initialTeams: Team[], 
                 <Label>Subject Line <span className="text-destructive">*</span></Label>
                 <Input
                   required
-                  placeholder="e.g. Schedule Update for Tonight's Scrims"
+                  placeholder="e.g. Event Schedule & Venue Update for Participants"
                   value={broadcastSubject}
                   onChange={e => setBroadcastSubject(e.target.value)}
                 />

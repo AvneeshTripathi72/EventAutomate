@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, Zap, ArrowRight, Trophy, User, Mail, Phone, Gamepad2, CheckCircle2 } from "lucide-react";
+import { X, Zap, ArrowRight, Trophy, User, Mail, Phone, GraduationCap, Sparkles, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -91,16 +91,15 @@ export function PromoBanner() {
                     color: "#c4b5fd",
                   }}
                 >
-                  🎮 Season 2026 — Open Now
+                  🎓 Campus Fest 2026 — Open Now
                 </span>
               </div>
               <p className="text-white font-bold text-base sm:text-lg leading-tight">
-                ESportHub Championship — Register your team &amp; compete for{" "}
-                <span style={{ color: "#67e8f9" }}>$10,000 in prizes!</span>
+                Campus Innovators &amp; Tech Challenge — Register your team &amp; compete for{" "}
+                <span style={{ color: "#67e8f9" }}>₹1,00,000 in prizes!</span>
               </p>
               <p className="text-violet-200 text-xs mt-0.5 opacity-80">
-                Limited spots available · Deadline: Aug 31, 2026 · Open to all
-                verified organizations
+                Limited slots · Deadline: Aug 31, 2026 · Open to all college &amp; university students
               </p>
             </div>
           </div>
@@ -169,8 +168,8 @@ export function PromoBanner() {
                   You&apos;re Registered! 🎉
                 </h3>
                 <p className="text-sm text-violet-200 max-w-xs">
-                  Welcome to the ESportHub Championship! We&apos;ll send
-                  confirmation details to{" "}
+                  Welcome to the Campus Innovation Fest! We&apos;ll send
+                  confirmation details and automated passes to{" "}
                   <strong className="text-cyan-300">{formData.email}</strong>.
                 </p>
               </div>
@@ -202,11 +201,10 @@ export function PromoBanner() {
                   </span>
                 </div>
                 <DialogTitle className="text-white text-xl">
-                  Championship Registration
+                  Campus Fest Registration
                 </DialogTitle>
                 <DialogDescription className="text-violet-300 text-sm">
-                  Fill in your details to secure your spot. Limited slots
-                  available!
+                  Fill in your details to secure your spot. Automated event pass will be emailed!
                 </DialogDescription>
               </DialogHeader>
 
@@ -269,18 +267,18 @@ export function PromoBanner() {
                   />
                 </div>
 
-                {/* Gamertag */}
+                {/* Student ID / Roll No */}
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="reg-gamertag"
                     className="text-violet-200 text-xs font-medium flex items-center gap-1.5"
                   >
-                    <Gamepad2 className="h-3.5 w-3.5" /> Gamertag / IGN
+                    <GraduationCap className="h-3.5 w-3.5" /> Student Roll No / ID
                   </Label>
                   <Input
                     id="reg-gamertag"
                     name="gamertag"
-                    placeholder="xX_ProGamer_Xx"
+                    placeholder="e.g. 21BCE1042 / Stanford-882"
                     required
                     value={formData.gamertag}
                     onChange={handleChange}
@@ -288,18 +286,18 @@ export function PromoBanner() {
                   />
                 </div>
 
-                {/* Game */}
+                {/* Event Category */}
                 <div className="space-y-1.5">
                   <Label
                     htmlFor="reg-game"
                     className="text-violet-200 text-xs font-medium flex items-center gap-1.5"
                   >
-                    <Trophy className="h-3.5 w-3.5" /> Game / Category
+                    <Sparkles className="h-3.5 w-3.5" /> Event Track / Category
                   </Label>
                   <Input
                     id="reg-game"
                     name="game"
-                    placeholder="e.g. Valorant, CS2, FIFA 25"
+                    placeholder="e.g. Hackathon, Robotics, Design, Cultural, Quiz"
                     required
                     value={formData.game}
                     onChange={handleChange}

@@ -32,7 +32,7 @@ export const getPaymentTemplate = ({
 <body>
   <div class="container">
     <div class="header">
-      <h1>ESportHub</h1>
+      <h1>EventAutomate</h1>
     </div>
     <div class="content">
       <h2 style="color: #10b981; margin-top: 0; text-align: center;">Payment Successful!</h2>
@@ -43,13 +43,13 @@ export const getPaymentTemplate = ({
 
       <div class="details">
         <div class="row"><span class="label">Transaction ID</span><span class="value" style="font-family: monospace;">${transactionId}</span></div>
-        <div class="row"><span class="label">Team Name</span><span class="value">${teamName}</span></div>
+        <div class="row"><span class="label">Team / Participant</span><span class="value">${teamName}</span></div>
         <div class="row"><span class="label">Date</span><span class="value">${new Date().toLocaleDateString()}</span></div>
       </div>
 
     </div>
     <div class="footer">
-      <p>This is an automated receipt from ESportHub. Please keep it for your records.</p>
+      <p>This is an automated receipt from EventAutomate. Please keep it for your records.</p>
     </div>
   </div>
 </body>
