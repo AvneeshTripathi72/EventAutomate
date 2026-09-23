@@ -3,11 +3,13 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { ENV } from "@/lib/env";
 
 export async function isSuperAdmin() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  return user?.email === process.env.SUPER_ADMIN_EMAIL;
+  const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || ENV.SUPER_ADMIN_EMAIL;
+  return user?.email === superAdminEmail;
 }
 
 export async function getAllUsers() {
@@ -97,7 +99,8 @@ export async function deleteAdminUser(id: string) {
   const adminAuthClient = createAdminClient();
 
   const { data: { user } } = await adminAuthClient.auth.admin.getUserById(id);
-  if (user?.email === process.env.SUPER_ADMIN_EMAIL) {
+  const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || ENV.SUPER_ADMIN_EMAIL;
+  if (user?.email === superAdminEmail) {
     return { error: "Cannot delete the primary Super Admin account." };
   }
 

@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { ENV } from "@/lib/env";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -7,8 +8,8 @@ export async function updateSession(request: NextRequest) {
   });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL || ENV.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ENV.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
@@ -31,9 +32,17 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const isBypassed = request.cookies.get("auth_bypass")?.value === "true";
+
   const url = request.nextUrl.clone();
-  if (!user && (url.pathname.startsWith("/dashboard") || url.pathname.startsWith("/onboarding"))) {
+  if (!user && !isBypassed && (url.pathname.startsWith("/dashboard") || url.pathname.startsWith("/onboarding"))) {
     url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  // If already authenticated or bypassed, visiting /login redirects to /dashboard
+  if ((user || isBypassed) && url.pathname === "/login") {
+    url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
 

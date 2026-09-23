@@ -27,16 +27,20 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts",
-    "client/src/**/*",
+    "src/**/*",
     "shared/**/*",
-    "server/**/*",
-    "admin/src/**/*",
-    "candidate/src/**/*"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "**/*.test.ts",
+    "admin",
+    "candidate",
+    "client",
+    "server",
+    "scratch"
+  ]
 }

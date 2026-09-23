@@ -1,16 +1,15 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
-import { login } from "@/actions/auth";
+import { Eye, EyeOff, Sparkles, ArrowRight, Loader2 } from "lucide-react";
+import { login, bypassLogin } from "@/actions/auth";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -20,6 +19,7 @@ import { Label } from "@/components/ui/label";
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
+  const [isBypassing, setIsBypassing] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
@@ -40,6 +40,18 @@ export default function LoginPage() {
     }
   }
 
+  async function handleBypass() {
+    setIsBypassing(true);
+    setError(null);
+    try {
+      await bypassLogin();
+      window.location.href = "/dashboard";
+    } catch (e: any) {
+      console.warn("Bypass login warning:", e);
+      window.location.href = "/dashboard";
+    }
+  }
+
   return (
     <Card className="border-0 shadow-lg sm:border sm:shadow-sm">
       <CardHeader className="space-y-1 text-center">
@@ -47,10 +59,44 @@ export default function LoginPage() {
           Welcome back
         </CardTitle>
         <CardDescription>
-          Enter your email and password to log in to your account.
+          Enter your email and password or use the instant bypass.
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* Instant Access / Bypass Button */}
+        <div className="mb-5">
+          <Button
+            type="button"
+            onClick={handleBypass}
+            disabled={isPending || isBypassing}
+            className="w-full h-11 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-sm transition-all shadow-md group"
+          >
+            {isBypassing ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Entering website...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-amber-300 fill-amber-300" />
+                Bypass Login (Enter Main Website)
+                <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
+              </span>
+            )}
+          </Button>
+
+          <div className="relative my-5">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-border" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground font-medium">
+                Or sign in with email
+              </span>
+            </div>
+          </div>
+        </div>
+
         <form action={handleLogin} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -60,7 +106,7 @@ export default function LoginPage() {
               type="email"
               placeholder="rahul@example.com"
               required
-              disabled={isPending}
+              disabled={isPending || isBypassing}
             />
           </div>
           <div className="space-y-2">
@@ -79,7 +125,7 @@ export default function LoginPage() {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 required
-                disabled={isPending}
+                disabled={isPending || isBypassing}
                 className="pr-10"
               />
               <button
@@ -101,7 +147,7 @@ export default function LoginPage() {
               {error}
             </div>
           )}
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button type="submit" variant="outline" className="w-full" disabled={isPending || isBypassing}>
             {isPending ? "Logging in..." : "Log in"}
           </Button>
         </form>

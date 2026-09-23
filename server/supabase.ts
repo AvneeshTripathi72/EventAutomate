@@ -1,13 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl =
+  process.env.VITE_SUPABASE_URL ||
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  "https://lhxcxzbbzgsfyjrocjls.supabase.co";
+const supabaseKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxoeGN4emJiemdzZnlqcm9jamxzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTEyODc0MSwiZXhwIjoyMTAwNzA0NzQxfQ.SFLzjzTn0oEg7KDdTPv4FIbJjg2HM-wHZttoRn9mA1E";
 
-if (!supabaseUrl || !supabaseKey) {
-  console.warn("⚠️ Warning: Supabase environment variables are missing.");
-}
-
-export const supabase = createClient(supabaseUrl || "https://placeholder.supabase.co", supabaseKey || "placeholder");
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export function toCamel(obj: any): any {
   if (Array.isArray(obj)) return obj.map(toCamel);

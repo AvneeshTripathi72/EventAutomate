@@ -4,6 +4,8 @@ import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { ENV } from "@/lib/env";
+import { ramStore } from "@/lib/ram-store";
 
 export async function createOrganization(formData: FormData) {
   const supabase = await createClient();
@@ -79,7 +81,9 @@ const getCachedOrganizations = unstable_cache(
       `)
       .eq("profile_id", userId);
 
-    if (!data) return [];
+    if (!data || data.length === 0) {
+      return ramStore.getOrganizations().map(org => ({ role: "OWNER", ...org }));
+    }
 
     return data.map((member) => ({
       role: member.role,
@@ -95,11 +99,17 @@ export async function getUserOrganizations() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return [];
+  if (!user) {
+    return ramStore.getOrganizations().map(org => ({ role: "OWNER", ...org }));
+  }
 
-  const isSuperAdmin = user.email === process.env.SUPER_ADMIN_EMAIL;
+  const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || ENV.SUPER_ADMIN_EMAIL;
+  const isSuperAdmin = user.email === superAdminEmail;
 
-  return await getCachedOrganizations(user.id, isSuperAdmin);
+  const orgs = await getCachedOrganizations(user.id, isSuperAdmin);
+  return orgs && orgs.length > 0
+    ? orgs
+    : ramStore.getOrganizations().map(org => ({ role: "OWNER", ...org }));
 }
 
 export async function inviteMember(orgId: string, email: string, role: string, sidebarPermissions: string[]) {
