@@ -207,30 +207,39 @@ export function Sidebar({
         </nav>
       </div>
 
-      {/* ── Logout — always pinned at the bottom ── */}
-      <div className="p-4 border-t border-border/50 bg-muted/10 shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg uppercase shrink-0">
-            {userEmail ? userEmail.charAt(0) : 'U'}
+      {/* ── User & Logout Profile — pinned at the bottom ── */}
+      {(() => {
+        const isGhostOrScrims = !userEmail || userEmail.toLowerCase().includes("scrims");
+        const displayName = isGhostOrScrims ? "Guest Organizer" : userEmail.split("@")[0];
+        const displayEmail = isGhostOrScrims ? "guest.organizer@campus.edu" : userEmail;
+        const avatarLetter = isGhostOrScrims ? "G" : (userEmail?.charAt(0) || "U");
+
+        return (
+          <div className="p-4 border-t border-border/50 bg-muted/10 shrink-0">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg uppercase shrink-0 shadow-sm">
+                {avatarLetter}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate text-foreground">
+                  {displayName}
+                </p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {displayEmail}
+                </p>
+              </div>
+              <ThemeToggle />
+              <button
+                onClick={() => logout()}
+                className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors shrink-0"
+                title="Log Out"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate text-foreground">
-              {userEmail ? userEmail.split('@')[0] : 'Campus Lead'}
-            </p>
-            <p className="text-xs text-muted-foreground truncate">
-              {userEmail || 'Student Organizer'}
-            </p>
-          </div>
-          <ThemeToggle />
-          <button
-            onClick={() => logout()}
-            className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors shrink-0"
-            title="Log Out"
-          >
-            <LogOut className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
+        );
+      })()}
     </div>
   );
 }

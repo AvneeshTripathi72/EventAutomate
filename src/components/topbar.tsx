@@ -85,28 +85,36 @@ export function Topbar({ user, organizations = [], currentOrgSlug, isSuperAdmin 
         </div>
 
         {/* User Profile */}
-        <DropdownMenu>
-          <DropdownMenuTrigger className="rounded-full h-9 w-9 ring-2 ring-transparent hover:ring-primary/20 transition-all outline-none">
-            <Avatar className="h-9 w-9 overflow-hidden bg-primary border-none">
-              <AvatarImage src={user?.user_metadata?.avatar_url || ""} />
-              <AvatarFallback className="bg-primary text-primary-foreground font-semibold uppercase">
-                {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0) || "U"}
-              </AvatarFallback>
-            </Avatar>
-            <span className="sr-only">Toggle user menu</span>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <div className="flex items-center justify-start gap-2 p-2">
-              <div className="flex flex-col space-y-1 leading-none">
-                {user?.user_metadata?.full_name && (
-                  <p className="font-medium text-sm">{user.user_metadata.full_name}</p>
-                )}
-                <p className="w-[200px] truncate text-xs text-muted-foreground">
-                  {user?.email}
-                </p>
-              </div>
-            </div>
-            <DropdownMenuSeparator />
+        {(() => {
+          const userEmail = user?.email || "";
+          const isGhostOrScrims = !userEmail || userEmail.toLowerCase().includes("scrims");
+          const displayName = isGhostOrScrims ? "Guest Organizer" : (user?.user_metadata?.full_name || userEmail.split("@")[0]);
+          const displayEmail = isGhostOrScrims ? "guest.organizer@campus.edu" : userEmail;
+          const avatarLetter = isGhostOrScrims ? "G" : (displayName?.charAt(0) || "U");
+
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="rounded-full h-9 w-9 ring-2 ring-transparent hover:ring-primary/20 transition-all outline-none">
+                <Avatar className="h-9 w-9 overflow-hidden bg-primary border-none">
+                  <AvatarImage src={!isGhostOrScrims ? (user?.user_metadata?.avatar_url || "") : ""} />
+                  <AvatarFallback className="bg-primary text-primary-foreground font-semibold uppercase">
+                    {avatarLetter}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="sr-only">Toggle user menu</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="flex items-center justify-start gap-2 p-2">
+                  <div className="flex flex-col space-y-1 leading-none">
+                    <p className="font-medium text-sm">{displayName}</p>
+                    <p className="w-[200px] truncate text-xs text-muted-foreground">
+                      {displayEmail}
+                    </p>
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
+          );
+        })()}
             {isSuperAdmin && (
               <>
                 <DropdownMenuItem className="cursor-pointer text-primary focus:text-primary p-0" render={<Link href="/dashboard/admin" className="flex items-center w-full px-2 py-1.5" />}>
