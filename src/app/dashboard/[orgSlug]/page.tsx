@@ -94,19 +94,21 @@ export default async function OrgDashboardPage({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <Button asChild variant="outline" size="sm" className="border-violet-500/40 text-violet-200 hover:text-white hover:bg-violet-500/20 gap-2">
-              <Link href={`/dashboard/${orgSlug}/event-registration`}>
-                <ExternalLink className="h-4 w-4 text-cyan-400" />
-                Student Portal
-              </Link>
-            </Button>
-            <Button asChild size="sm" className="bg-gradient-to-r from-violet-600 via-purple-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 text-white font-semibold shadow-lg shadow-violet-500/25 border-none gap-2">
-              <Link href={`/dashboard/${orgSlug}/forms/new`}>
-                <Wand2 className="h-4 w-4" />
-                Create AI Event Form
-              </Link>
-            </Button>
+          <div className="flex items-center gap-3 shrink-0">
+            <Link
+              href={`/dashboard/${orgSlug}/event-registration`}
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-violet-500/40 bg-violet-950/40 px-3.5 py-2 text-xs font-medium text-violet-200 shadow-sm transition-all hover:border-violet-400 hover:bg-violet-900/60 hover:text-white"
+            >
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
+              <span>Student Portal</span>
+            </Link>
+            <Link
+              href={`/dashboard/${orgSlug}/forms/new`}
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:from-violet-500 hover:to-indigo-500 hover:shadow-violet-500/40"
+            >
+              <PlusCircle className="h-3.5 w-3.5 shrink-0 text-white" />
+              <span>Create Event</span>
+            </Link>
           </div>
         </div>
 
