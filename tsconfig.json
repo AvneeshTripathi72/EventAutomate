@@ -22,8 +22,7 @@
       "@/*": ["./src/*", "./client/src/*"],
       "@shared/*": ["./shared/*"],
       "@assets/*": ["./client/src/assets/*"]
-    },
-    "types": ["vite/client"]
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -41,6 +40,9 @@
     "candidate",
     "client",
     "server",
-    "scratch"
+    "scratch",
+    "src/hooks/use-auth.tsx",
+    "src/lib/protected-route.tsx",
+    "src/lib/queryClient.ts"
   ]
 }

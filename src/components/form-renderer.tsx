@@ -99,8 +99,8 @@ export function FormRenderer({ form, sections, fields, orgName }: FormRendererPr
 
     if (paymentRequired) {
       if (amount > 0) {
-        const orderRes = await createRazorpayOrder(amount);
-        if (orderRes.error) {
+        const orderRes: any = await createRazorpayOrder(amount);
+        if (orderRes?.error) {
           setError(orderRes.error);
           setIsSubmitting(false);
           return;
@@ -108,7 +108,7 @@ export function FormRenderer({ form, sections, fields, orgName }: FormRendererPr
 
         if (orderRes.mock) {
           setIsProcessing(true);
-          const verifyRes = await verifyPayment(
+          const verifyRes: any = await verifyPayment(
             orderRes.orderId,
             `mock_payment_${Date.now()}`,
             "mock_signature",
@@ -116,7 +116,7 @@ export function FormRenderer({ form, sections, fields, orgName }: FormRendererPr
             amount
           );
 
-          if (verifyRes.error) {
+          if (verifyRes?.error) {
              setError(verifyRes.error);
              setIsSubmitting(false); setIsProcessing(false);
              return;
@@ -140,7 +140,7 @@ export function FormRenderer({ form, sections, fields, orgName }: FormRendererPr
           order_id: orderRes.orderId,
           handler: async function (response: any) {
             setIsProcessing(true);
-            const verifyRes = await verifyPayment(
+            const verifyRes: any = await verifyPayment(
               response.razorpay_order_id,
               response.razorpay_payment_id,
               response.razorpay_signature,
@@ -148,7 +148,7 @@ export function FormRenderer({ form, sections, fields, orgName }: FormRendererPr
               amount
             );
 
-            if (verifyRes.error) {
+            if (verifyRes?.error) {
               setError(verifyRes.error);
               setIsSubmitting(false);
               setIsProcessing(false);

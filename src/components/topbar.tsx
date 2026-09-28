@@ -3,18 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { logout } from "@/actions/auth";
-import { Menu, PlusCircle, LogOut, User as UserIcon, Settings, Code, Check, Shield, LayoutDashboard, FileText, Users, Trophy, CalendarDays, CreditCard, Bell } from "lucide-react";
+import { Menu, LogOut, User as UserIcon, Settings, Code, Shield, LayoutDashboard, FileText, Users, Trophy, CalendarDays, CreditCard, Bell } from "lucide-react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,6 +24,12 @@ interface TopbarProps {
 
 export function Topbar({ user, organizations = [], currentOrgSlug, isSuperAdmin }: TopbarProps) {
   const currentOrg = organizations?.find((o) => o.slug === currentOrgSlug);
+
+  const userEmail = user?.email || "";
+  const isGhostOrScrims = !userEmail || userEmail.toLowerCase().includes("scrims");
+  const displayName = isGhostOrScrims ? "Guest Organizer" : (user?.user_metadata?.full_name || userEmail.split("@")[0]);
+  const displayEmail = isGhostOrScrims ? "guest.organizer@campus.edu" : userEmail;
+  const avatarLetter = isGhostOrScrims ? "G" : (displayName?.charAt(0) || "U");
 
   return (
     <header className="sticky top-0 z-40 flex h-16 w-full items-center gap-4 border-b bg-background/80 backdrop-blur-md px-6 shadow-sm">
@@ -59,7 +61,7 @@ export function Topbar({ user, organizations = [], currentOrgSlug, isSuperAdmin 
                 <Trophy className="h-5 w-5" /> Current Events
               </Link>
               <Link href={`/dashboard/${currentOrgSlug}/matches`} className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
-                <CalendarDays className="h-5 w-5" /> Events & History
+                <CalendarDays className="h-5 w-5" /> Events &amp; History
               </Link>
               <Link href={`/dashboard/${currentOrgSlug}/billing`} className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
                 <CreditCard className="h-5 w-5" /> Billing
@@ -74,47 +76,37 @@ export function Topbar({ user, organizations = [], currentOrgSlug, isSuperAdmin 
 
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <div className="flex-1 flex items-center gap-4 sm:flex-initial sm:mr-auto">
-            <div className="w-[220px] shadow-sm flex items-center border rounded-md px-4 py-2 bg-background text-sm font-medium">
-              <div className="flex items-center gap-2 truncate">
-                <div className="h-5 w-5 rounded-sm bg-muted flex items-center justify-center font-bold text-[10px]">
-                  {currentOrg ? currentOrg.name.charAt(0).toUpperCase() : "O"}
-                </div>
-                <span className="truncate">{currentOrg ? currentOrg.name : "Organization"}</span>
+          <div className="w-[220px] shadow-sm flex items-center border rounded-md px-4 py-2 bg-background text-sm font-medium">
+            <div className="flex items-center gap-2 truncate">
+              <div className="h-5 w-5 rounded-sm bg-muted flex items-center justify-center font-bold text-[10px]">
+                {currentOrg ? currentOrg.name.charAt(0).toUpperCase() : "O"}
               </div>
+              <span className="truncate">{currentOrg ? currentOrg.name : "Organization"}</span>
             </div>
+          </div>
         </div>
 
         {/* User Profile */}
-        {(() => {
-          const userEmail = user?.email || "";
-          const isGhostOrScrims = !userEmail || userEmail.toLowerCase().includes("scrims");
-          const displayName = isGhostOrScrims ? "Guest Organizer" : (user?.user_metadata?.full_name || userEmail.split("@")[0]);
-          const displayEmail = isGhostOrScrims ? "guest.organizer@campus.edu" : userEmail;
-          const avatarLetter = isGhostOrScrims ? "G" : (displayName?.charAt(0) || "U");
-
-          return (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-full h-9 w-9 ring-2 ring-transparent hover:ring-primary/20 transition-all outline-none">
-                <Avatar className="h-9 w-9 overflow-hidden bg-primary border-none">
-                  <AvatarImage src={!isGhostOrScrims ? (user?.user_metadata?.avatar_url || "") : ""} />
-                  <AvatarFallback className="bg-primary text-primary-foreground font-semibold uppercase">
-                    {avatarLetter}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="sr-only">Toggle user menu</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <div className="flex items-center justify-start gap-2 p-2">
-                  <div className="flex flex-col space-y-1 leading-none">
-                    <p className="font-medium text-sm">{displayName}</p>
-                    <p className="w-[200px] truncate text-xs text-muted-foreground">
-                      {displayEmail}
-                    </p>
-                  </div>
-                </div>
-                <DropdownMenuSeparator />
-          );
-        })()}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="rounded-full h-9 w-9 ring-2 ring-transparent hover:ring-primary/20 transition-all outline-none">
+            <Avatar className="h-9 w-9 overflow-hidden bg-primary border-none">
+              <AvatarImage src={!isGhostOrScrims ? (user?.user_metadata?.avatar_url || "") : ""} />
+              <AvatarFallback className="bg-primary text-primary-foreground font-semibold uppercase">
+                {avatarLetter}
+              </AvatarFallback>
+            </Avatar>
+            <span className="sr-only">Toggle user menu</span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <div className="flex items-center justify-start gap-2 p-2">
+              <div className="flex flex-col space-y-1 leading-none">
+                <p className="font-medium text-sm">{displayName}</p>
+                <p className="w-[200px] truncate text-xs text-muted-foreground">
+                  {displayEmail}
+                </p>
+              </div>
+            </div>
+            <DropdownMenuSeparator />
             {isSuperAdmin && (
               <>
                 <DropdownMenuItem className="cursor-pointer text-primary focus:text-primary p-0" render={<Link href="/dashboard/admin" className="flex items-center w-full px-2 py-1.5" />}>

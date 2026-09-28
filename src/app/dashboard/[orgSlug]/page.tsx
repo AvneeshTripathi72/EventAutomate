@@ -13,7 +13,8 @@ import {
   Calendar,
 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
 import { getOrganizationPayments } from "@/actions/payment";
 
@@ -66,18 +67,20 @@ export default async function OrgDashboardPage({
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
-          <Button asChild variant="outline" size="sm">
-            <Link href={`/dashboard/${orgSlug}/event-registration`} className="flex items-center gap-2">
-              <ExternalLink className="h-4 w-4" />
-              <span>Student Portal</span>
-            </Link>
-          </Button>
-          <Button asChild size="sm">
-            <Link href={`/dashboard/${orgSlug}/forms/new`} className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              <span>Create Event</span>
-            </Link>
-          </Button>
+          <Link
+            href={`/dashboard/${orgSlug}/event-registration`}
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex items-center gap-2")}
+          >
+            <ExternalLink className="h-4 w-4" />
+            <span>Student Portal</span>
+          </Link>
+          <Link
+            href={`/dashboard/${orgSlug}/forms/new`}
+            className={cn(buttonVariants({ size: "sm" }), "flex items-center gap-2")}
+          >
+            <Plus className="h-4 w-4" />
+            <span>Create Event</span>
+          </Link>
         </div>
       </div>
 
@@ -147,11 +150,12 @@ export default async function OrgDashboardPage({
                   Latest participants and paid event entries.
                 </CardDescription>
               </div>
-              <Button asChild variant="ghost" size="sm" className="text-xs">
-                <Link href={`/dashboard/${orgSlug}/billing`}>
-                  View All
-                </Link>
-              </Button>
+              <Link
+                href={`/dashboard/${orgSlug}/billing`}
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-xs")}
+              >
+                View All
+              </Link>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col text-sm h-full space-y-4">
