@@ -15,6 +15,12 @@ import {
   Send,
   PlusCircle,
   ExternalLink,
+  Bot,
+  ShieldCheck,
+  Cpu,
+  Flame,
+  Layers,
+  Wand2,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -59,189 +65,264 @@ export default async function OrgDashboardPage({
   const recentPayments = payments.slice(0, 6);
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto pb-12">
-      {/* ── Header with Title & Action ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-violet-500/10 text-violet-400 border border-violet-500/20">
-              <GraduationCap className="h-3.5 w-3.5" />
-              College Event Automation Platform
-            </span>
+    <div className="space-y-8 max-w-6xl mx-auto pb-16">
+      {/* ── Top Neural Status Bar & Header ── */}
+      <div className="relative overflow-hidden rounded-2xl border border-violet-500/30 bg-gradient-to-r from-violet-950/80 via-slate-950 to-indigo-950/80 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl pointer-events-none" />
+        <div className="absolute -left-16 -bottom-16 h-64 w-64 rounded-full bg-cyan-600/20 blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-violet-500/20 text-violet-300 border border-violet-500/40 shadow-inner">
+                <Bot className="h-3.5 w-3.5 text-violet-400 animate-pulse" />
+                EventAutomate Neural Engine v3.4
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+                AI Auto-Pilot Active
+              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-2">
+              AI Club &amp; Event Operating System
+              <Sparkles className="h-6 w-6 text-amber-400" />
+            </h1>
+            <p className="text-slate-300 text-sm max-w-2xl leading-relaxed">
+              Autonomous college event automation for <span className="text-violet-300 font-semibold">{orgSlug}</span>. 
+              Zero-friction registration pipelines, instant Razorpay/UPI smart verification, dynamic encrypted QR tickets &amp; AI broadcast.
+            </p>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">Club &amp; Event Dashboard</h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Managing event automation for <strong className="text-foreground">{orgSlug}</strong>. Seamless registration, automated UPI/Razorpay payments &amp; digital QR passes.
-          </p>
+
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Button asChild variant="outline" size="sm" className="border-violet-500/40 text-violet-200 hover:text-white hover:bg-violet-500/20 gap-2">
+              <Link href={`/dashboard/${orgSlug}/event-registration`}>
+                <ExternalLink className="h-4 w-4 text-cyan-400" />
+                Student Portal
+              </Link>
+            </Button>
+            <Button asChild size="sm" className="bg-gradient-to-r from-violet-600 via-purple-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 text-white font-semibold shadow-lg shadow-violet-500/25 border-none gap-2">
+              <Link href={`/dashboard/${orgSlug}/forms/new`}>
+                <Wand2 className="h-4 w-4" />
+                Create AI Event Form
+              </Link>
+            </Button>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button asChild variant="outline" size="sm" className="gap-1.5">
-            <Link href={`/dashboard/${orgSlug}/event-registration`}>
-              <ExternalLink className="h-4 w-4" />
-              Student Portal
-            </Link>
-          </Button>
-          <Button asChild size="sm" className="gap-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-md shadow-violet-500/20">
-            <Link href={`/dashboard/${orgSlug}/forms/new`}>
-              <PlusCircle className="h-4 w-4" />
-              Create Event
-            </Link>
-          </Button>
-        </div>
-      </div>
-
-      {/* ── College Event Automation Pipeline Flow ── */}
-      <div className="rounded-xl border border-violet-500/20 bg-gradient-to-br from-violet-950/40 via-background to-indigo-950/30 p-5 shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-violet-400" />
-            <h3 className="text-sm font-semibold text-foreground">Club Event Automation Workflow</h3>
-          </div>
-          <span className="text-xs text-muted-foreground">Automated from start to finish</span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-          <div className="p-3.5 rounded-lg bg-card/60 border border-border/60 flex items-start gap-3">
-            <div className="p-2 rounded-md bg-violet-500/10 text-violet-400 shrink-0">
-              <FormInput className="h-4 w-4" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-foreground">1. Create Event Form</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Define fee, team size &amp; custom club questions.</p>
-            </div>
-          </div>
-
-          <div className="p-3.5 rounded-lg bg-card/60 border border-border/60 flex items-start gap-3">
-            <div className="p-2 rounded-md bg-emerald-500/10 text-emerald-400 shrink-0">
-              <CreditCard className="h-4 w-4" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-foreground">2. Auto Payment</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">UPI &amp; Razorpay payment verified instantly.</p>
-            </div>
-          </div>
-
-          <div className="p-3.5 rounded-lg bg-card/60 border border-border/60 flex items-start gap-3">
-            <div className="p-2 rounded-md bg-cyan-500/10 text-cyan-400 shrink-0">
-              <QrCode className="h-4 w-4" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-foreground">3. QR Passes Sent</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Auto-generated entry passes sent to student inbox.</p>
-            </div>
-          </div>
-
-          <div className="p-3.5 rounded-lg bg-card/60 border border-border/60 flex items-start gap-3">
-            <div className="p-2 rounded-md bg-amber-500/10 text-amber-400 shrink-0">
-              <CheckCircle2 className="h-4 w-4" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-foreground">4. Live Check-in</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">Volunteer QR scanning &amp; auto certificates.</p>
-            </div>
-          </div>
+        {/* AI Copilot Quick Action Chips */}
+        <div className="relative z-10 mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-slate-400 font-medium flex items-center gap-1 mr-1">
+            <Zap className="h-3.5 w-3.5 text-amber-400" /> Quick AI Triggers:
+          </span>
+          <Link
+            href={`/dashboard/${orgSlug}/forms/new`}
+            className="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 border border-white/10 text-slate-300 hover:text-white transition-all flex items-center gap-1.5"
+          >
+            <Sparkles className="h-3 w-3 text-violet-400" /> Generate Hackathon Form
+          </Link>
+          <Link
+            href={`/dashboard/${orgSlug}/notifications`}
+            className="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 border border-white/10 text-slate-300 hover:text-white transition-all flex items-center gap-1.5"
+          >
+            <Send className="h-3 w-3 text-cyan-400" /> Dispatch WhatsApp Passes
+          </Link>
+          <Link
+            href={`/dashboard/${orgSlug}/billing`}
+            className="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/15 border border-white/10 text-slate-300 hover:text-white transition-all flex items-center gap-1.5"
+          >
+            <ShieldCheck className="h-3 w-3 text-emerald-400" /> Verify Payment Logs
+          </Link>
         </div>
       </div>
 
-      {/* ── Key Metrics ── */}
+      {/* ── 4-Stage Autonomous Event Pipeline Matrix ── */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-sm font-semibold tracking-wider uppercase text-slate-400 flex items-center gap-2">
+            <Cpu className="h-4 w-4 text-violet-400" /> Autonomous Event Pipeline Matrix
+          </h2>
+          <span className="text-xs text-violet-400 font-medium bg-violet-500/10 px-2 py-0.5 rounded-full border border-violet-500/20">
+            End-to-End Orchestrated
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-all duration-300 hover:border-violet-500/50 hover:bg-slate-900/80 hover:shadow-lg hover:shadow-violet-500/10">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-2.5 rounded-lg bg-violet-500/15 text-violet-400 border border-violet-500/30">
+                <FormInput className="h-5 w-5" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded">
+                Stage 01
+              </span>
+            </div>
+            <h3 className="text-sm font-bold text-white group-hover:text-violet-300 transition-colors">
+              Smart Form Synthesizer
+            </h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              Dynamically sets registration caps, custom team fields, fees, and rules with zero code.
+            </p>
+          </div>
+
+          <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-all duration-300 hover:border-emerald-500/50 hover:bg-slate-900/80 hover:shadow-lg hover:shadow-emerald-500/10">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-2.5 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <CreditCard className="h-5 w-5" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
+                Stage 02
+              </span>
+            </div>
+            <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+              Razorpay &amp; UPI AI Gateway
+            </h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              Instant transaction reconciliation, automated webhook confirmations &amp; fraud checks.
+            </p>
+          </div>
+
+          <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-all duration-300 hover:border-cyan-500/50 hover:bg-slate-900/80 hover:shadow-lg hover:shadow-cyan-500/10">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-2.5 rounded-lg bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+                <QrCode className="h-5 w-5" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded">
+                Stage 03
+              </span>
+            </div>
+            <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+              Encrypted QR Pass Dispatch
+            </h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              Anti-tamper digital tickets generated instantly and delivered to student emails &amp; phones.
+            </p>
+          </div>
+
+          <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-all duration-300 hover:border-amber-500/50 hover:bg-slate-900/80 hover:shadow-lg hover:shadow-amber-500/10">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-2.5 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                <CheckCircle2 className="h-5 w-5" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">
+                Stage 04
+              </span>
+            </div>
+            <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+              Gate Scanner &amp; Certificates
+            </h3>
+            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+              Volunteer phone camera check-in scanner with live headcount analytics and auto e-certificates.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Key Telemetry & Metrics ── */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="hover:shadow-md transition-shadow border-border/80">
+        <Card className="border border-white/10 bg-slate-900/50 hover:border-emerald-500/40 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue Collected</CardTitle>
-            <CreditCard className="h-4 w-4 text-emerald-500" />
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Processed Revenue</CardTitle>
+            <CreditCard className="h-4 w-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">₹{formattedRevenue}</div>
-            <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-              <span className="text-emerald-500 font-medium">100% automated</span> via Razorpay/UPI
-            </p>
+            <div className="text-2xl font-black text-white">₹{formattedRevenue}</div>
+            <div className="flex items-center gap-1.5 mt-1.5 text-xs text-emerald-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              <span>100% Automated Gateway</span>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow border-border/80">
+        <Card className="border border-white/10 bg-slate-900/50 hover:border-violet-500/40 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Active Event Forms</CardTitle>
-            <FormInput className="h-4 w-4 text-violet-500" />
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-400">Active Event Forms</CardTitle>
+            <FormInput className="h-4 w-4 text-violet-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formsCount}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Accepting student registrations
-            </p>
+            <div className="text-2xl font-black text-white">{formsCount}</div>
+            <div className="flex items-center gap-1.5 mt-1.5 text-xs text-violet-300">
+              <Sparkles className="h-3 w-3 text-violet-400" />
+              <span>Accepting Registrations</span>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow border-border/80">
+        <Card className="border border-white/10 bg-slate-900/50 hover:border-cyan-500/40 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Club Coordinators</CardTitle>
-            <Users className="h-4 w-4 text-cyan-500" />
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-400">Club Coordinators</CardTitle>
+            <Users className="h-4 w-4 text-cyan-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{membersCount}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Active organizers in {orgSlug}
-            </p>
+            <div className="text-2xl font-black text-white">{membersCount}</div>
+            <div className="flex items-center gap-1.5 mt-1.5 text-xs text-cyan-300">
+              <Bot className="h-3 w-3 text-cyan-400" />
+              <span>Org Managers Active</span>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow border-border/80">
+        <Card className="border border-white/10 bg-slate-900/50 hover:border-amber-500/40 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Campus Events Live</CardTitle>
-            <Activity className="h-4 w-4 text-amber-500" />
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-400">Live Campus Fests</CardTitle>
+            <Activity className="h-4 w-4 text-amber-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Active campus fest in progress
-            </p>
+            <div className="text-2xl font-black text-white">1</div>
+            <div className="flex items-center gap-1.5 mt-1.5 text-xs text-amber-400">
+              <Flame className="h-3 w-3 text-amber-400" />
+              <span>Inter-College Fest Live</span>
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* ── Main Content Area: Recent Activity & Quick Actions ── */}
+      {/* ── Main Content Area: Live Activity & Quick Actions ── */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4 min-h-[340px] border-border/80">
+        <Card className="col-span-4 min-h-[360px] border border-white/10 bg-slate-900/50">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-base">Recent Registrations &amp; Payments</CardTitle>
-                <CardDescription className="text-xs mt-0.5">
-                  Latest automated student entries and ticket payments.
+                <CardTitle className="text-base text-white flex items-center gap-2">
+                  <Activity className="h-4 w-4 text-violet-400" />
+                  Live Registration &amp; Payment Telemetry
+                </CardTitle>
+                <CardDescription className="text-xs mt-0.5 text-slate-400">
+                  Real-time automated participant entries and instant settlements.
                 </CardDescription>
               </div>
-              <Button asChild variant="ghost" size="sm" className="text-xs">
+              <Button asChild variant="outline" size="sm" className="text-xs border-white/10 text-slate-300 hover:text-white">
                 <Link href={`/dashboard/${orgSlug}/billing`}>
-                  View All
+                  All Logs
                 </Link>
               </Button>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col text-sm h-full space-y-4">
             {recentPayments.length === 0 ? (
-              <div className="flex flex-col items-center justify-center text-muted-foreground h-44 text-center border rounded-lg border-dashed">
-                <Ticket className="h-8 w-8 text-muted-foreground/40 mb-2" />
-                <p className="font-medium text-foreground">No registrations recorded yet</p>
-                <p className="text-xs text-muted-foreground mt-0.5">Share your event form link to begin collecting registrations.</p>
+              <div className="flex flex-col items-center justify-center text-slate-400 h-48 text-center border rounded-xl border-dashed border-white/10 bg-white/[0.02]">
+                <Ticket className="h-9 w-9 text-slate-500 mb-2 opacity-60" />
+                <p className="font-semibold text-slate-200">No registrations recorded yet</p>
+                <p className="text-xs text-slate-400 mt-0.5">Publish your event link to start receiving automated registrations &amp; payments.</p>
               </div>
             ) : (
               recentPayments.map((payment: any) => (
-                <div key={payment.id} className="flex items-center justify-between border-b border-border/60 pb-3 last:border-0">
+                <div key={payment.id} className="flex items-center justify-between border-b border-white/5 pb-3 last:border-0">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-sm">Student Registration Paid</p>
-                      <span className="px-1.5 py-0.2 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-semibold">
-                        Confirmed
+                      <p className="font-semibold text-sm text-white">Student Pass Auto-Confirmed</p>
+                      <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/15 text-emerald-400 font-semibold border border-emerald-500/30">
+                        Paid &amp; Pass Sent
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground truncate max-w-[200px] sm:max-w-[280px]">
-                      {payment.submission?.form?.title || "Campus Event Pass"} • {payment.razorpay_payment_id || "Direct"}
+                    <p className="text-xs text-slate-400 truncate max-w-[200px] sm:max-w-[280px]">
+                      {payment.submission?.form?.title || "Campus Event Pass"} • {payment.razorpay_payment_id || "Instant Gateway"}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-emerald-500">+₹{(payment.amount * commissionMultiplier).toFixed(2)}</p>
-                    <p className="text-[11px] text-muted-foreground flex items-center gap-1 justify-end mt-0.5">
-                      <Clock className="h-3 w-3" />
+                    <p className="font-bold text-emerald-400 text-base">+₹{(payment.amount * commissionMultiplier).toFixed(2)}</p>
+                    <p className="text-[11px] text-slate-400 flex items-center gap-1 justify-end mt-0.5">
+                      <Clock className="h-3 w-3 text-slate-500" />
                       {new Date(payment.created_at).toLocaleDateString()}
                     </p>
                   </div>
@@ -251,55 +332,58 @@ export default async function OrgDashboardPage({
           </CardContent>
         </Card>
 
-        {/* ── Quick Actions Toolkit ── */}
-        <Card className="col-span-3 min-h-[340px] border-border/80">
+        {/* ── AI Quick Actions Toolkit ── */}
+        <Card className="col-span-3 min-h-[360px] border border-white/10 bg-slate-900/50">
           <CardHeader>
-            <CardTitle className="text-base">Club Automation Toolkit</CardTitle>
-            <CardDescription className="text-xs mt-0.5">
-              Instant actions for student fests &amp; club organizers.
+            <CardTitle className="text-base text-white flex items-center gap-2">
+              <Bot className="h-4 w-4 text-cyan-400" />
+              Club Automation Toolkit
+            </CardTitle>
+            <CardDescription className="text-xs mt-0.5 text-slate-400">
+              Autonomous workflows for college fests &amp; student club heads.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
             <Link
               href={`/dashboard/${orgSlug}/forms/new`}
-              className="p-3.5 border border-border/80 rounded-lg hover:border-violet-500/60 hover:bg-violet-500/5 transition-all cursor-pointer group block focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+              className="p-3.5 border border-white/10 rounded-xl hover:border-violet-500/60 hover:bg-violet-500/10 transition-all cursor-pointer group block"
             >
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium group-hover:text-violet-400 transition-colors flex items-center gap-2">
-                  <FormInput className="h-4 w-4 text-violet-400" />
-                  Create Event Form
+                <h4 className="text-sm font-semibold text-white group-hover:text-violet-300 transition-colors flex items-center gap-2">
+                  <Wand2 className="h-4 w-4 text-violet-400" />
+                  Launch New Event Form
                 </h4>
-                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-violet-400 transition-colors" />
+                <ArrowRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-violet-300 transition-colors" />
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Set up custom registration fields, team limits, and fees.</p>
+              <p className="text-xs text-slate-400 mt-1">Configure ticket tiers, team caps, and custom screening questions.</p>
             </Link>
 
             <Link
               href={`/dashboard/${orgSlug}/notifications`}
-              className="p-3.5 border border-border/80 rounded-lg hover:border-violet-500/60 hover:bg-violet-500/5 transition-all cursor-pointer group block focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+              className="p-3.5 border border-white/10 rounded-xl hover:border-cyan-500/60 hover:bg-cyan-500/10 transition-all cursor-pointer group block"
             >
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium group-hover:text-violet-400 transition-colors flex items-center gap-2">
+                <h4 className="text-sm font-semibold text-white group-hover:text-cyan-300 transition-colors flex items-center gap-2">
                   <Send className="h-4 w-4 text-cyan-400" />
-                  Send Broadcast &amp; QR Passes
+                  Broadcast Passes &amp; Updates
                 </h4>
-                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-violet-400 transition-colors" />
+                <ArrowRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-cyan-300 transition-colors" />
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Email digital tickets, rulebooks &amp; WhatsApp reminders.</p>
+              <p className="text-xs text-slate-400 mt-1">Instant mass emails, WhatsApp announcements &amp; event rulebooks.</p>
             </Link>
 
             <Link
               href={`/dashboard/${orgSlug}/members`}
-              className="p-3.5 border border-border/80 rounded-lg hover:border-violet-500/60 hover:bg-violet-500/5 transition-all cursor-pointer group block focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+              className="p-3.5 border border-white/10 rounded-xl hover:border-amber-500/60 hover:bg-amber-500/10 transition-all cursor-pointer group block"
             >
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium group-hover:text-violet-400 transition-colors flex items-center gap-2">
+                <h4 className="text-sm font-semibold text-white group-hover:text-amber-300 transition-colors flex items-center gap-2">
                   <Users className="h-4 w-4 text-amber-400" />
-                  Invite Club Volunteers
+                  Manage Club Coordinators
                 </h4>
-                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-violet-400 transition-colors" />
+                <ArrowRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-amber-300 transition-colors" />
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Add student coordinators and gate check-in scanners.</p>
+              <p className="text-xs text-slate-400 mt-1">Invite student council leads and assign gate check-in scanners.</p>
             </Link>
           </CardContent>
         </Card>

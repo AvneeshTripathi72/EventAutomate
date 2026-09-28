@@ -144,7 +144,6 @@ export function Sidebar({
 
   return (
     <div className="hidden border-r bg-muted/20 lg:flex lg:flex-col lg:w-64 shrink-0 h-screen">
-      {/* ── Logo ── */}
       <div className="p-4 border-b border-border/50 shrink-0">
         <Link href="/" className="flex items-center gap-2 font-bold tracking-tight text-lg">
           <Image src="/logo.svg" alt="Logo" width={28} height={28} className="rounded-md shadow-sm" priority />
