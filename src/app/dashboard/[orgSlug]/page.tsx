@@ -219,21 +219,7 @@ export default async function OrgDashboardPage({
       </div>
 
       {/* ── Key Telemetry & Metrics ── */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="border border-white/10 bg-slate-900/50 hover:border-emerald-500/40 transition-all">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Processed Revenue</CardTitle>
-            <CreditCard className="h-4 w-4 text-emerald-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-black text-white">₹{formattedRevenue}</div>
-            <div className="flex items-center gap-1.5 mt-1.5 text-xs text-emerald-400">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" />
-              <span>100% Automated Gateway</span>
-            </div>
-          </CardContent>
-        </Card>
-
+      <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-3">
         <Card className="border border-white/10 bg-slate-900/50 hover:border-violet-500/40 transition-all">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-slate-400">Active Event Forms</CardTitle>
