@@ -96,7 +96,7 @@ export default function EventRegistrationPage() {
             className="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4"
             style={{ background: "rgba(124,58,237,0.3)", color: "#c4b5fd" }}
           >
-            🎮 Season 2026 · Open Registration
+            🎓 Campus Fest 2026 · Open Registration
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-2">
             {EVENT.name}
@@ -232,7 +232,7 @@ export default function EventRegistrationPage() {
                     size="sm"
                     className="mt-2 border-violet-500/40 text-violet-300 hover:text-white hover:bg-violet-500/20"
                   >
-                    Register Another Player
+                    Register Another Participant
                   </Button>
                 </div>
               ) : (
