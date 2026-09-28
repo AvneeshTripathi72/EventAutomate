@@ -99,7 +99,7 @@ export function Sidebar({
     {
       id: "billing",
       href: `/dashboard/${orgSlug}/billing`,
-      label: "Billing & Payouts",
+      label: "Club Funds & Payouts",
       icon: CreditCard,
       active: pathname === `/dashboard/${orgSlug}/billing`,
     },
